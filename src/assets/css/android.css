@@ -1,0 +1,26 @@
+.button_type{
+  width: 500px;
+  height: 40px;
+  margin: 50px auto;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 5px #eee;
+}
+.box{
+  width: 500px;
+  height: 300px;
+  margin: 50px auto;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 5px #eee;
+}
+h3{
+  text-align: center;
+}
+.el-input{
+  width: 92%;
+}
+.item-button button{
+  width: 120px;
+  margin: 0 auto;
+}

@@ -4,8 +4,11 @@ import Vue from 'vue'
 import Register from '../views/Register';
 import index from '../views/index';
 import login from '../views/login';
-import home from '../views/home.vue'
+import home from '../views/homeView/home.vue'
+import android from "@/views/android";
 import NotFound from '../views/404';
+import userHome from "@/views/userHome";
+import Echarts from "../views/showDateBy3D/Echarts"
 //Vue.use(插件)传入路由对插件、
 Vue.use(VueRouter)
     //创建路由对象
@@ -34,6 +37,21 @@ const routes = [{
         component: home
     },
     {
+        path: '/userHome',
+        name: 'userHome',
+        component: userHome,
+    },
+    {
+        path: '/android',
+        name: 'android',
+        component: android
+    },
+    {
+        path: '/Echarts',
+        name: 'Echarts',
+        component: Echarts
+    },
+    {
         path: '*',
         name: 'NotFound',
         component: NotFound
@@ -46,11 +64,12 @@ const router = new VueRouter({
 //导航守卫
 //判断是否登录
 router.beforeEach((to,from,next)=>{
-  console.log('to.path'+to.path);
-  if (to.path === '/login'){
+  console.log('to.path='+to.path);
+  if (to.path === '/login'|| to.path === '/register'){
     next();
   }else {
     let  token=localStorage.getItem("Authorization");
+    console.log(token)
     if (token===null||token===''){
       next('/login');
     }else {

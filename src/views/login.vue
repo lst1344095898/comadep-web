@@ -1,15 +1,16 @@
 <template>
   <div class="box">
       <h3>登录</h3>
-    <el-form :model="registerData" status-icon :rules="rules" ref="registerFrom" label-width="100px" class="demo-ruleForm">
-      <el-form-item label="账号" prop="userName">
-        <el-input  v-model="registerData.userName" ></el-input>
+    <el-form :model="loginData" status-icon :rules="rules" ref="loginFrom" label-width="100px" class="demo-ruleForm">
+      <el-form-item label="账号" prop="telephoneNumber">
+        <el-input  v-model="loginData.telephoneNumber"  placeholder="请输入电话号"></el-input>
       </el-form-item>
       <el-form-item label="密码" prop="password">
-        <el-input type="password" v-model="registerData.password" ></el-input>
+        <el-input type="password" v-model="loginData.password" ></el-input>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="submitForm('registerFrom')">登录</el-button>
+        <el-button type="primary" @click="submitForm('loginFrom')">登录</el-button>
+        <el-button type="info" @click="toRegister">注册</el-button>
       </el-form-item>
     </el-form>
   </div>
@@ -20,13 +21,13 @@ import {mapMutations} from 'vuex'
 export default {
   data() {
       return {
-        registerData:{
-          userName:'',
+        loginData:{
+          telephoneNumber:'',
           password:'',
         },
         rules:{
-          userName:[{required:true,message:'账号不能为空',trigger:'blur'},
-                    {min:3,max:32,message:'长度应该在3~32之间',trigger:'blur'}
+          telephoneNumber:[{required:true,message:'电话号不能为空',trigger:'blur'},
+                    {min:11,max:11,message:'长度应该为11位',trigger:'blur'}
                   ],
           password:[{required:true,message:'密码不能为空',trigger:'blur'},
                     {min:3,max:32,message:'长度应该在3~32之间',trigger:'blur'}
@@ -35,23 +36,39 @@ export default {
       }
   },
   methods: {
-        ...mapMutations(['changeLogin']),
+        ...mapMutations(['changeLogin','changePowerCode','changUser']),
         submitForm(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
             // alert('submit!');
-            this.$axios.post('/login',this.registerData)
+            this.$axios.post('/login',this.loginData)
             .then(res => {
-              console.log(res);
-              this.$message({
-                type:'success',
-                message:'用户登录成功'
-              })
-              // localStorage.setItem(tokenId,res.data.token);
-              //将token存入
-              this.changeLogin({Authorization:res.data.token});
+              //返回用户状态
+              if (res.data.code===200){
+                console.log(res.data.data)
+                this.$message({
+                  type:'success',
+                  message:'用户登录成功'
+                })
+                // localStorage.setItem(tokenId,res.data.token);
+                //将token存入
+                this.changeLogin({Authorization:res.data.token});
+                //将用户权限存入vuex
+                this.changePowerCode(res.data.data.powerCode);
+                //将用户信息存入vuex
+                this.changUser(res.data.data);
+                if (res.data.data.powerCode === 0) {
+                  this.$router.push('/home');
+                }else if (res.data.data.powerCode === 3){
+                  this.$router.push('/userHome');
+                }
+              }else{
+                this.$message({
+                  type:'error',
+                  message:res.data.message
+                })
+              }
 
-              this.$router.push('/home')
             })
             .catch(err => {
               console.error(err);
@@ -62,6 +79,9 @@ export default {
           }
         });
       },
+    toRegister(){
+          this.$router.push('/register')
+    },
       }
 }
 </script>
