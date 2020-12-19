@@ -16,7 +16,8 @@ const store = new Vuex.Store({
       sex: '',
       age: '',
       createTime: '',
-    }
+    },
+    dataTemp:[],
   },
   //方法
   mutations:{
@@ -41,6 +42,9 @@ const store = new Vuex.Store({
         state.user.age=data.age
         state.user.createTime=data.createTime
       console.log(state.user);
+    },
+    changMap(state,data){
+        state.dataTemp = data;
     }
   }
 })

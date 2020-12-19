@@ -16,8 +16,6 @@ export default {
   data () {
     return {
       msg: 'Welcome use Echarts',
-
-
     }
   },
   mounted(){
@@ -34,7 +32,10 @@ export default {
       //Y坐标轴
       let days = this.echartsList.days;
       //Z坐标轴
-      let  dataTemp = this.echartsList.dataTemp;
+      // let  dataTemp=[];
+      // dataTemp=this.echartsList.dataTemp;
+      // console.log("data",this.$store.state.dataTemp)
+      console.log("data",this.$store.state.dataTemp)
       // 绘制图表
       myChart.setOption({
         backgroundColor: '#bdcfd0',
@@ -78,10 +79,10 @@ export default {
         series: [{
           type: 'bar3D',
           name:'安全系数',
-          data: dataTemp.map(function (item) {
+          data: this.$store.state.dataTemp.map(function (item) {
             return {
-              value: [item[1], item[0], item[2],item[2]],
-              name: item[1]+'号楼'
+              value: [item[0], item[1], item[2],item[2]],
+              name: item[3]+'号楼'
             }
           }),
           shading: 'lambert',

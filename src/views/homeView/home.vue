@@ -7,7 +7,8 @@
       <el-menu-item class="userMan_menu" index="2" @click="userMan">用户管理</el-menu-item>
       <el-menu-item class="info_menu" index="3" disabled>消息中心</el-menu-item>
       <el-menu-item class="my_menu" index="4"><a href="https://www.ele.me" target="_blank">我的</a></el-menu-item>
-      </el-menu>
+       <el-menu-item  index="5" @click="testDemo">用户管理</el-menu-item>
+     </el-menu>
     </div>
 <!--    数据统计内容部分-->
     <div v-show="isDatePanel">
@@ -34,17 +35,10 @@
               <i class="el-icon-document"></i>
               <span slot="title">工作分类</span>
             </el-menu-item>
-            <el-submenu index="4">
-              <template slot="title">
-                <i class="el-icon-setting"></i>
-                <span slot="title">地图设置</span>
-              </template>
-              <el-menu-item-group>
-                <template slot="title">设置</template>
-                <el-menu-item index="1-1" @click="MapImport">地图导入</el-menu-item>
-                <el-menu-item index="1-2" @click="UpdateCoordinates">修改坐标</el-menu-item>
-              </el-menu-item-group>
-            </el-submenu>
+            <el-menu-item index="4"  @click="MapImport">
+              <i class="el-icon-setting"></i>
+              <span slot="title">地图设置</span>
+            </el-menu-item>
           </el-menu>
         </el-col>
       </div>
@@ -54,7 +48,7 @@
       </div>
 <!--      图片展示-->
       <div class="data_img_div">
-        <Echarts v-bind:echartsList="echartsList" ></Echarts>
+        <Echarts :key="timer" v-bind:echartsList="echartsList" ></Echarts>
       </div>
     </div>
 <!--    用户管理界面-->
@@ -150,18 +144,7 @@ export default {
           days:['原点', '东2', '东3',
             '东4', '东5', '东6', '东7','东8','东9',"东10"],
           //
-          dataTemp:[
-            [0,0,0],[0,1,80],[0,2,0],[0,3,89],[0,4,0],[0,5,0],[0,6,0],[0,7,0],[0,8,0],[0,9,0],
-            [1,0,0],[1,1,20],[1,2,0],[1,3,0],[1,4,43],[1,5,0],[1,6,54],[1,7,0],[1,8,0],[1,9,0],
-            [2,0,0],[2,1,38],[2,2,0],[2,3,0],[2,4,76],[2,5,0],[2,6,0],[2,7,0],[2,8,0],[2,9,0],
-            [3,0,0],[3,1,0],[3,2,27],[3,3,4],[3,4,0],[3,5,0],[3,6,0],[3,7,0],[3,8,0],[3,9,0],
-            [4,0,0],[4,1,0],[4,2,0],[4,3,0],[4,4,0],[4,5,84],[4,6,0],[4,7,0],[4,8,95],[4,9,0],
-            [5,0,73],[5,1,0],[5,2,0],[5,3,5],[5,4,0],[5,5,0],[5,6,0],[5,7,0],[5,8,0],[5,9,0],
-            [6,0,0],[6,1,0],[6,2,0],[6,3,0],[6,4,0],[6,5,76],[6,6,0],[6,7,8],[6,8,0],[6,9,0],
-            [7,0,61],[7,1,0],[7,2,0],[7,3,0],[7,4,0],[7,5,0],[7,6,0],[7,7,0],[7,8,0],[7,9,0],
-            [8,0,0],[8,1,0],[8,2,0],[8,3,0],[8,4,78],[8,5,0],[8,6,0],[8,7,88],[8,8,91],[8,9,0],
-            [9,0,0],[9,1,0],[9,2,0],[9,3,0],[9,4,53],[9,5,0],[9,6,0],[9,7,0],[9,8,0],[9,9,0],
-        ],
+          dataTemp:[],
       },
       activeIndex: '1',
       isDatePanel:true,
@@ -197,7 +180,7 @@ export default {
         desc: ''
       },
       mapSettingList:{
-        mapSettingShow:true,//地图设置的显示
+        mapSettingShow:false,//地图设置的显示
         options: [{
           value: '选项1',
           label: '10*10'
@@ -211,15 +194,16 @@ export default {
         initMapForm: {
           mapStyle: ''
         },
-      }
-
-
-
+      },
+      timer: ''
     }
 
   },
+  mounted() {
+    //进行地图数据请求
+    this.testDemo();
+  },
   methods:{
-
     handleSelect(key, keyPath) {
       console.log(key, keyPath);
     },
@@ -238,10 +222,29 @@ export default {
       this.isUserPanel = true;
     },
     MapImport(){
-      this.mapSettingShow=true;
+      this.mapSettingList.mapSettingShow=true;
     },
     UpdateCoordinates(){
 
+    },
+    testDemo(){
+      this.$axios.post("/Map/getMap",{})
+        .then(res => {
+          let dateTemp=res.data.data;
+          let arrOutside=[];
+          for (let x=0;x<dateTemp.length;x++){
+            let arrInside=[];
+            arrInside.push(dateTemp[x].buildingWidth);
+            arrInside.push(dateTemp[x].buildingLength);
+            arrInside.push(dateTemp[x].buildingHeight);
+            arrInside.push(dateTemp[x].buildingNumber)
+            arrOutside.push(arrInside);
+          }
+          console.log("testdata",arrOutside)
+          this.$store.state.dataTemp=arrOutside;
+          this.timer = new Date().getTime()
+        })
+        .catch()
     }
   }
 }
