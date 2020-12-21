@@ -1,22 +1,27 @@
 <template>
-  <div class="box">
-    <el-form :model="registerData" status-icon :rules="rules" ref="registerFrom" label-width="100px" class="demo-ruleForm">
-      <el-form-item label="账号" prop="userName">
-        <el-input  v-model="registerData.userName" ></el-input>
-      </el-form-item>
-      <el-form-item label="电话号码" prop="telephoneNumber">
-        <el-input  v-model="registerData.telephoneNumber" ></el-input>
-      </el-form-item>
-      <el-form-item label="密码" prop="password">
-        <el-input type="password" v-model="registerData.password" ></el-input>
-      </el-form-item>
-      <el-form-item label="确认密码" prop="password2">
-        <el-input type="password" v-model="registerData.password2" ></el-input>
-      </el-form-item>
-      <el-form-item>
-        <el-button type="primary" @click="submitFormCheck('registerFrom')">注册</el-button>
-      </el-form-item>
-    </el-form>
+  <div>
+    <div id="back_img_div">
+      <img src="../assets/img/login_back.jpg">
+    </div>
+    <div id="register_div">
+      <el-form :model="registerData" status-icon :rules="rules" ref="registerFrom" label-width="100px" class="demo-ruleForm">
+        <el-form-item label="账号" prop="userName">
+          <el-input  v-model="registerData.userName" ></el-input>
+        </el-form-item>
+        <el-form-item label="电话号码" prop="telephoneNumber">
+          <el-input  v-model="registerData.telephoneNumber" ></el-input>
+        </el-form-item>
+        <el-form-item label="密码" prop="password">
+          <el-input type="password" v-model="registerData.password" ></el-input>
+        </el-form-item>
+        <el-form-item label="确认密码" prop="password2">
+          <el-input type="password" v-model="registerData.password2" ></el-input>
+        </el-form-item>
+        <el-form-item class="button_div">
+          <el-button type="primary" @click="submitFormCheck('registerFrom')">注册</el-button>
+        </el-form-item>
+      </el-form>
+    </div>
 <!--    弹出框-->
     <div>
       <el-dialog title="请确认基本消息" class="el-dialog--center" :visible.sync="dialogFormVisible">
@@ -156,14 +161,6 @@ export default {
 }
 </script>
 <style scoped>
-    .box{
-      width: 500px;
-      height: 400px;
-      margin: 100px auto;
-      padding: 20px;
-      border-radius: 8px;
-      box-shadow: 0 0 5px #eee;
-    }
     h3{
       text-align: center;
     }
@@ -173,5 +170,30 @@ export default {
     .item-button button{
       width: 120px;
       margin: 0 auto;
+    }
+    #back_img_div{
+      position: absolute;
+      width: 1790px;
+      height: 900px;
+      left: 0px;
+      top: 0px;
+      z-index: -11;
+    }
+    #back_img_div img{
+      width: 1920px;
+      height: 937px;
+    }
+    #register_div{
+      width: 500px;
+      height: 350px;
+      margin: 100px auto;
+      padding-top: 50px;
+      border-radius: 8px;
+      background: aliceblue;
+      box-shadow: 0 0 5px #eee;
+    }
+    .button_div{
+      position: relative;
+      left: 18%;
     }
 </style>

@@ -1,18 +1,25 @@
 <template>
-  <div class="box">
+  <div>
+
+    <div id="back_img_div">
+      <img src="../assets/img/login_back.jpg">
+    </div>
+    <h1>欢迎登录疫情社区管理页面</h1>
+    <div id="login_div">
       <h3>登录</h3>
-    <el-form :model="loginData" status-icon :rules="rules" ref="loginFrom" label-width="100px" class="demo-ruleForm">
-      <el-form-item label="账号" prop="telephoneNumber">
-        <el-input  v-model="loginData.telephoneNumber"  placeholder="请输入电话号"></el-input>
-      </el-form-item>
-      <el-form-item label="密码" prop="password">
-        <el-input type="password" v-model="loginData.password" ></el-input>
-      </el-form-item>
-      <el-form-item>
-        <el-button type="primary" @click="submitForm('loginFrom')">登录</el-button>
-        <el-button type="info" @click="toRegister">注册</el-button>
-      </el-form-item>
-    </el-form>
+      <el-form :model="loginData" status-icon :rules="rules" ref="loginFrom" label-width="100px" class="demo-ruleForm">
+        <el-form-item label="账号" prop="telephoneNumber">
+          <el-input  v-model="loginData.telephoneNumber"  placeholder="请输入电话号"></el-input>
+        </el-form-item>
+        <el-form-item label="密码" prop="password">
+          <el-input type="password" v-model="loginData.password" ></el-input>
+        </el-form-item>
+        <el-form-item class="button_div">
+          <el-button type="primary" @click="submitForm('loginFrom')">登录</el-button>
+          <el-button type="info" @click="toRegister">注册</el-button>
+        </el-form-item>
+      </el-form>
+    </div>
   </div>
 </template>
 
@@ -86,13 +93,12 @@ export default {
 }
 </script>
 <style scoped>
-    .box{
-      width: 500px;
-      height: 400px;
-      margin: 100px auto;
-      padding: 20px;
-      border-radius: 8px;
-      box-shadow: 0 0 5px #eee;
+    h1{
+      position: absolute;
+      font-size: 50px;
+      left: 35%;
+      color: #409EFF;
+      text-shadow: 5px 1px 6px #fcfffe;
     }
     h3{
       text-align: center;
@@ -103,5 +109,32 @@ export default {
     .item-button button{
       width: 120px;
       margin: 0 auto;
+    }
+    #back_img_div{
+      position: absolute;
+      width: 1790px;
+      height: 900px;
+      left: 0px;
+      top: 0px;
+      z-index: -11;
+    }
+    #back_img_div img{
+      width: 1920px;
+      height: 937px;
+    }
+    #login_div{
+      position: relative;
+      width: 500px;
+      height: 300px;
+      top: 160px;
+      margin: 100px auto;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 5px #eee;
+      background: aliceblue;
+    }
+    .button_div{
+      position: relative;
+      left: 15%;
     }
 </style>

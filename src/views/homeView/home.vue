@@ -7,7 +7,8 @@
       <el-menu-item class="userMan_menu" index="2" @click="userMan">用户管理</el-menu-item>
       <el-menu-item class="info_menu" index="3" disabled>消息中心</el-menu-item>
       <el-menu-item class="my_menu" index="4"><a href="https://www.ele.me" target="_blank">我的</a></el-menu-item>
-       <el-menu-item  index="5" @click="testDemo">用户管理</el-menu-item>
+<!--       刷新-->
+       <el-menu-item  @click="RefreshDemo">刷新</el-menu-item>
      </el-menu>
     </div>
 <!--    数据统计内容部分-->
@@ -15,8 +16,8 @@
 <!--      图片统计选项-->
       <div class="imgChange_button_div">
         <el-col :span="12">
-          <el-menu default-active="2" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose"  >
-            <el-submenu index="1">
+          <el-menu default-active="1-1" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose"  >
+            <el-submenu index="1-1">
               <template slot="title">
                 <i class="el-icon-location"></i>
                 <span>出入频率</span>
@@ -201,7 +202,7 @@ export default {
   },
   mounted() {
     //进行地图数据请求
-    this.testDemo();
+    this.RefreshDemo();
   },
   methods:{
     handleSelect(key, keyPath) {
@@ -227,7 +228,7 @@ export default {
     UpdateCoordinates(){
 
     },
-    testDemo(){
+    RefreshDemo(){
       this.$axios.post("/Map/getMap",{})
         .then(res => {
           let dateTemp=res.data.data;
@@ -240,7 +241,8 @@ export default {
             arrInside.push(dateTemp[x].buildingNumber)
             arrOutside.push(arrInside);
           }
-          console.log("testdata",arrOutside)
+          //得到分数
+          //发出分数请求
           this.$store.state.dataTemp=arrOutside;
           this.timer = new Date().getTime()
         })
