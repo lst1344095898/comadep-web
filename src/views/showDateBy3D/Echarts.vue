@@ -32,10 +32,6 @@ export default {
       //Y坐标轴
       let days = this.echartsList.days;
       //Z坐标轴
-      // let  dataTemp=[];
-      // dataTemp=this.echartsList.dataTemp;
-      // console.log("data",this.$store.state.dataTemp)
-      console.log("data",this.$store.state.dataTemp)
       // 绘制图表
       myChart.setOption({
         backgroundColor: '#bdcfd0',

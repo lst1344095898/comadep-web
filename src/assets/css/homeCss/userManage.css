@@ -1,0 +1,27 @@
+#table_div{
+padding: 0;
+}
+#table_div tr{
+  height: 20px;
+}
+.user_details_div{
+  z-index: 10;
+  position: absolute;
+  left: 30%;
+  top: 1%;
+  /* width: 302px; */
+  /* height: 213px; */
+  background-color: white;
+  box-shadow: 3px 3px 3px #5e5e67;
+}
+.back_div{
+  z-index: 1;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+  display: none;
+  background-color: #9a9aa7;
+  opacity:0.5;
+}

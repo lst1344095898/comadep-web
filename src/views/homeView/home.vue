@@ -6,7 +6,21 @@
       <el-menu-item class="data_menu" index="1" @click="dataSt">数据统计</el-menu-item>
       <el-menu-item class="userMan_menu" index="2" @click="userMan">用户管理</el-menu-item>
       <el-menu-item class="info_menu" index="3" disabled>消息中心</el-menu-item>
-      <el-menu-item class="my_menu" index="4"><a href="https://www.ele.me" target="_blank">我的</a></el-menu-item>
+      <div class="my_info_div">
+        <el-row class="block-col-2">
+            <el-dropdown>
+            <span class="el-dropdown-link">
+              我的
+              <i class="el-icon-arrow-down el-icon--right"></i>
+            </span>
+              <el-dropdown-menu slot="dropdown">
+                <el-dropdown-item icon="el-icon-plus" >
+                  <span @click="loginOut">退出</span>
+                </el-dropdown-item>
+              </el-dropdown-menu>
+            </el-dropdown>
+        </el-row>
+      </div>
 <!--       刷新-->
        <el-menu-item  @click="RefreshDemo">刷新</el-menu-item>
      </el-menu>
@@ -16,7 +30,8 @@
 <!--      图片统计选项-->
       <div class="imgChange_button_div">
         <el-col :span="12">
-          <el-menu default-active="1-1" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose"  >
+          <el-menu default-active="1-1" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose"
+                   @select="handleSelect2">
             <el-submenu index="1-1">
               <template slot="title">
                 <i class="el-icon-location"></i>
@@ -24,8 +39,8 @@
               </template>
               <el-menu-item-group>
                 <template slot="title">小项</template>
-                <el-menu-item index="1-1">本地图</el-menu-item>
-                <el-menu-item index="1-2">外地</el-menu-item>
+                <el-menu-item index="1-1" @click="localFrequency">本地</el-menu-item>
+                <el-menu-item index="1-2" @click="ootFrequency">外地</el-menu-item>
               </el-menu-item-group>
             </el-submenu>
             <el-menu-item index="2">
@@ -34,7 +49,7 @@
             </el-menu-item>
             <el-menu-item index="3" >
               <i class="el-icon-document"></i>
-              <span slot="title">工作分类</span>
+              <span slot="title">出入安全提醒</span>
             </el-menu-item>
             <el-menu-item index="4"  @click="MapImport">
               <i class="el-icon-setting"></i>
@@ -43,13 +58,36 @@
           </el-menu>
         </el-col>
       </div>
+<!--      日期选择-->
+      <div class="block date_div">
+<!--        <span class="demonstration">月</span>-->
+        <span>选择时间</span>
+        <el-date-picker
+          v-model="valueMonth"
+          type="month"
+          placeholder="选择月">
+        </el-date-picker>
+        <el-button type="info" plain @click="changeDate">确定</el-button>
+      </div>
 <!--      对话框-->
       <div class="mapSetting_div">
+
         <map-setting v-show="mapSettingList.mapSettingShow" v-bind:mapSettingList = "mapSettingList"></map-setting>
       </div>
 <!--      图片展示-->
       <div class="data_img_div">
-        <Echarts :key="timer" v-bind:echartsList="echartsList" ></Echarts>
+        <div>
+          <Echarts  v-show=showDateController[0] :key="timer" v-bind:echartsList="echartsList" ></Echarts>
+        </div>
+<!--        展示出入频率-->
+        <div>
+        <access-frequency v-show=showDateController[1]  :key="timer" v-bind:accessFrequencyList="accessFrequencyList"></access-frequency>
+        </div>
+<!--        年龄比例-->
+        <age-view v-show=showDateController[2] :key="timer" v-bind:ageViewList="ageViewList"></age-view>
+        <div>
+
+        </div>
       </div>
     </div>
 <!--    用户管理界面-->
@@ -57,35 +95,25 @@
 <!--      搜索框-->
       <div class="search_div">
         <div style="float: left">
-          <el-input  style="display: block" class="search_input" placeholder="search" v-model="search" ></el-input>
+          <el-input  style="display: block" class="search_input" placeholder="username/telephone" v-model="search" ></el-input>
         </div>
         <div style="float: left">
-          <el-button type="primary" icon="el-icon-search">搜索</el-button>
+          <el-button type="primary" icon="el-icon-search" @click="searchUser">搜索</el-button>
         </div>
       </div>
 <!--      导航栏-->
       <div class="userChange_button_div">
         <el-col :span="12">
           <el-menu
-            default-active="2"
+            default-active="0"
             class="el-menu-vertical-demo"
+            @select="changeBuilding"
             @open="handleOpen"
             @close="handleClose">
-            <el-submenu index="1">
-              <template slot="title">
-                <i class="el-icon-location"></i>
-                <span>一号楼</span>
-              </template>
-              <el-menu-item-group>
-                <template slot="title">楼层</template>
-                <el-menu-item index="1-1">1F</el-menu-item>
-                <el-menu-item index="1-2">2F</el-menu-item>
-                <el-menu-item index="1-3">3F</el-menu-item>
-                <el-menu-item index="1-4">4F</el-menu-item>
-                <el-menu-item index="1-5">5F</el-menu-item>
-
-              </el-menu-item-group>
-            </el-submenu>
+            <el-menu-item index="1">
+              <i class="el-icon-menu"></i>
+              <span slot="title">一号楼</span>
+            </el-menu-item>
             <el-menu-item index="2">
               <i class="el-icon-menu"></i>
               <span slot="title">二号楼</span>
@@ -103,40 +131,43 @@
       </div>
 <!--      数据表格-->
       <div class="userShowTable_div">
-        <el-table
-          :data="tableData"
-          style="width: 100%">
-          <el-table-column
-            prop="date"
-            label="日期"
-            width="180">
-          </el-table-column>
-          <el-table-column
-            prop="name"
-            label="姓名"
-            width="180">
-          </el-table-column>
-          <el-table-column
-            prop="address"
-            label="地址">
-          </el-table-column>
-        </el-table>
+<!--        用户信息-->
+        <user-manage  :key="timer" v-bind:userInfoList="userInfoList" ></user-manage>
+<!--        分页-->
+        <div class="page_div">
+          <el-pagination
+            background
+            layout="prev, pager, next"
+            @current-change="handleCurrentChange"
+            :current-page="this.pageParameter.currPage"
+            :total="this.pageParameter.total"
+            :page-size="this.pageParameter.pageSize"
+          >
+          </el-pagination>
+        </div>
       </div>
     </div>
   </div>
 
 </template>
 <script>
-import Echarts from "@/views/showDateBy3D/Echarts";
-import mapSetting from "@/views/homeView/mapSetting";
+import Echarts from "../showDateBy3D/Echarts";
+import mapSetting from "./mapSetting";
+import userManage from "./userManage";
+import accessFrequency from "../showDateBy3D/accessFrequency";
+import ageView from "../showDateBy3D/ageView";
 export default {
-  components: {Echarts,mapSetting},
+  components: {Echarts,mapSetting,userManage,accessFrequency,ageView},
   comments: {
     Echarts,
     mapSetting,
+    userManage,
+    accessFrequency,
+    ageView,
   },
   data(){
     return{
+      showDateController: [true,false],
       echartsList:{
           hours:['北10', '北9', '北8', '北7', '北6', '北5', '北4',
             '北3', '北2', '原点'
@@ -146,30 +177,20 @@ export default {
             '东4', '东5', '东6', '东7','东8','东9',"东10"],
           //
           dataTemp:[],
+          mapValue:[],
+      },
+      accessFrequencyList:{
+        name: '',
+        frequency:[],
+      },
+      ageViewList:{
+        averageAge: [],
       },
       activeIndex: '1',
       isDatePanel:true,
       isUserPanel:false,
       search:'',
       rules:{},
-      tableData: [{
-        date: '2016-05-02',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1518 弄'
-      }, {
-        date: '2016-05-04',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1517 弄'
-      }, {
-        date: '2016-05-01',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1519 弄'
-      }, {
-        date: '2016-05-03',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1516 弄'
-      }]
-      ,
       form: {
         name: '',
         region: '',
@@ -196,18 +217,40 @@ export default {
           mapStyle: ''
         },
       },
-      timer: ''
+      timer: '',
+      userInfoList:[],
+      pageParameter:{
+        currPage: 1,
+        total: 1,
+        pageSize: 8,
+        buildingNumber: 0,
+        floorNumber: 0,
+      },
+      valueMonth:new Date(),
     }
 
   },
   mounted() {
     //进行地图数据请求
     this.RefreshDemo();
+    //得到用户数据
+    this.getUserInfoByParameter();
   },
   methods:{
+    //切换显示的图片
+    showDateChange(key){
+      for (let i=0;i<this.showDateController.length;i++){
+        this.showDateController[i]=false;
+      }
+      this.showDateController[key]=true;
+    },
     handleSelect(key, keyPath) {
       console.log(key, keyPath);
     },
+    handleSelect2(key, keyPath) {
+      console.log(key, keyPath);
+    }
+    ,
     handleOpen(key, keyPath) {
       console.log(key, keyPath);
     },
@@ -231,7 +274,8 @@ export default {
     RefreshDemo(){
       this.$axios.post("/Map/getMap",{})
         .then(res => {
-          let dateTemp=res.data.data;
+          let dateTemp={'tea':'12'}
+          dateTemp=res.data.data;
           let arrOutside=[];
           for (let x=0;x<dateTemp.length;x++){
             let arrInside=[];
@@ -246,11 +290,135 @@ export default {
           this.$store.state.dataTemp=arrOutside;
           this.timer = new Date().getTime()
         })
-        .catch()
+        .catch();
+      this.getUserInfoByParameter();
+    },
+    Refresh(){
+      this.timer = new Date().getTime()
+    }
+    ,
+    loginOut(){
+      localStorage.removeItem("Authorization")
+      // console.log("out")
+      this.$router.push('/login');
+    },
+    handleCurrentChange(val) {
+      // 改变默认的页数
+      this.pageParameter.currPage=val
+      this.getUserInfoByParameter();
+      console.log(this.pageParameter);
+    },
+    getUserInfoByParameter(){
+      //通过参数得到用户数据
+      this.$axios.post('/user/getUserByParameter',{
+        currPage: this.pageParameter.currPage,
+        total: this.pageParameter.total,
+        pageSize: this.pageParameter.pageSize,
+        buildingNumber :this.pageParameter.buildingNumber,
+        floorNumber :this.pageParameter.floorNumber,
+      }).then(res => {
+        if (res.data.code == 200){
+          this.pageParameter.total=res.data.intResponse
+          this.userInfoList=res.data.data;
+        }else{
+          alert("url: /user/getUserByParameter-->服务器错误")
+        }
+      }).catch(err => {
+        console.error(err)
+      })
+    },
+    changeBuilding(key){
+      //选择楼层
+      // console.log(key+'楼')
+      this.pageParameter.buildingNumber=key;
+      this.getUserInfoByParameter()
+    },
+    searchUser(){
+      /**
+       * 模糊查询
+       */
+      this.$axios.post('/user/searchUser',{
+        currPage: this.pageParameter.currPage,
+        total: this.pageParameter.total,
+        pageSize: this.pageParameter.pageSize,
+        searchParameter: this.search
+      }).then(res=>{
+        if (res.data.code===200){
+          this.pageParameter.total=res.data.intResponse
+          this.userInfoList=res.data.data;
+        }else{
+          alert("500:服务器错误");
+        }
+      }).catch(err=>{
+        console.error(err);
+      })
+    },
+    /**
+     * 打印测试
+     */
+    changeDate(){
+      let dataTest= this.valueMonth;
+      let y = dataTest.getFullYear();
+      let m = dataTest.getMonth() + 1;
+      m = m < 10 ? '0' + m : m;
+      let d = dataTest.getDate();
+      d = d < 10 ? ('0' + d) : d;
+      let dateTime=y + '-' + m + '-' + d
+      console.log(dateTime);
+      // this.$axios.post()
+      // console.log(this.valueMonth.toString)
+    },
+    /**
+     * 选择本地本月出入频率
+     */
+    localFrequency(){
+      this.$axios.post('/Map/getAccessFrequencyLocal')
+      .then(res=>{
+            this.showDateChange(1);
+            console.log(this.showDateController)
+            this.Refresh();
+            this.accessFrequencyList.frequency={};
+            this.accessFrequencyList.name = '本地出入频率';
+            this.accessFrequencyList.frequency=res.data.data;
+            console.log(this.accessFrequencyList.frequency)
+      })
+      .catch(err=>{
+        console.error(err);
+      })
+    },
+    /**
+     * 外地频率
+     * @constructor
+     */
+    ootFrequency(){
+      this.$axios.post('/Map/getAccessFrequencyOot')
+        .then(res=>{
+          this.showDateChange(1);
+          console.log(this.showDateController)
+          this.Refresh();
+          this.accessFrequencyList.name = '外地出入频率';
+          this.accessFrequencyList.frequency={};
+          this.accessFrequencyList.frequency=res.data.data;
+          console.log(this.accessFrequencyList.frequency)
+        })
+        .catch(err=>{
+          console.error(err);
+        })
+    },
+    getAgeView(){
+      this.$axios.post('/Map/getAgeView')
+      .then(res=>{
+        this.showDateChange(2);
+        this.Refresh();
+        this.ageViewList.averageAge={};
+        this.ageViewList.averageAge=res.data.data;
+      })
+      .catch(err=>{
+        console.error(err);
+      })
     }
   }
 }
 </script>
-
 <style scoped src="../../assets/css/homeCss/home.css">
 </style>

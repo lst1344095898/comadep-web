@@ -16,7 +16,8 @@ Vue.use(VueRouter)
 
 
 //路由数组
-const routes = [{
+const routes = [
+    {
         path: '/',
         name: 'index',
         component: index
@@ -52,30 +53,31 @@ const routes = [{
         component: Echarts
     },
     {
-        path: '*',
+        path: '/*',
         name: 'NotFound',
         component: NotFound
     }
 ];
 const router = new VueRouter({
-        routes,
-    });
-    //将router 传入到实例对象
+    mode: 'history',
+    routes: routes,
+});
+//将router 传入到实例对象
 //导航守卫
 //判断是否登录
-router.beforeEach((to,from,next)=>{
-  console.log('to.path='+to.path);
-  if (to.path === '/login'|| to.path === '/register'){
-    next();
-  }else {
-    let  token=localStorage.getItem("Authorization");
-    console.log(token)
-    if (token===null||token===''){
-      next('/login');
-    }else {
-      next();
-    }
-  }
-})
-//导出
+router.beforeEach((to, from, next) => {
+        console.log('to.path=' + to.path);
+        if (to.path === '/login' || to.path === '/register') {
+            next();
+        } else {
+            let token = localStorage.getItem("Authorization");
+            console.log(token)
+            if (token === null || token === '') {
+                next('/login');
+            } else {
+                next();
+            }
+        }
+    })
+    //导出
 export default router

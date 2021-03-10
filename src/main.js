@@ -7,7 +7,7 @@ import router from "@/router/index";
 import axios from './axios/axios'
 import store from "@/store";
 import echartsGl from 'echarts-gl'
-axios.defaults.withCredentials=true
+//将封装好的axios设置引入axios
 Vue.prototype.$axios = axios
 Vue.prototype.$echarts=echarts
 Vue.prototype.$echartsGl=echartsGl
@@ -19,14 +19,5 @@ new Vue({
     store:store,
     render: h => h(App),
 }).$mount('#app')
-axios.interceptors.request.use(
-  config =>{
-    if (localStorage.getItem('Authorization')){
-      config.headers['Authorization']=localStorage.getItem('Authorization');
-    }
-    return config;
-  },
-  error => {
-    return Promise.reject(error)
-  }
-)
+
+

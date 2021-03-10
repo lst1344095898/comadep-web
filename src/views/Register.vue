@@ -87,7 +87,7 @@ export default {
         },
         rules:{
           userName:[{required:true,message:'账号不能为空',trigger:'blur'},
-                    {min:3,max:32,message:'长度应该在3~32之间',trigger:'blur'}
+                    {min:2,max:32,message:'长度应该在3~32之间',trigger:'blur'}
                   ],
           telephoneNumber:[{required:true,message:'手机号不能为空',trigger:'blur'},
             {min:11,max:11,message:'手机号长度不对',trigger:'blur'}
