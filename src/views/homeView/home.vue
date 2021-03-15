@@ -374,15 +374,23 @@ export default {
     localFrequency(){
       this.$axios.post('/Map/getAccessFrequencyLocal')
       .then(res=>{
+        if (res.data.code === 200){
             //页面展示控制
             this.showDateChange(1);
             console.log(this.showDateController)
             //更新
             this.Refresh();
-            this.accessFrequencyList.frequency={};
+            //出入频率集合
             this.accessFrequencyList.name = '本地出入频率';
+            this.accessFrequencyList.frequency={};
             this.accessFrequencyList.frequency=res.data.data;
-            console.log(this.accessFrequencyList.frequency)
+            console.log(this.accessFrequencyList.frequency);
+        }else{
+          this.$message({
+            type: 'error',
+            message: '数据错误!'
+          })
+        }
       })
       .catch(err=>{
         console.error(err);
