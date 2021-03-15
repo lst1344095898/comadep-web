@@ -101,7 +101,8 @@ export default {
   mounted() {
     console.log( '子组件'+this.userInfoList)
     },
-  methods:{
+    methods:{
+      //打开删除窗口
       handleClick(temp){
           console.log(temp)
           let back_div=document.getElementById('back_div')
@@ -109,17 +110,36 @@ export default {
           this.visible=true;
           this.userDetails=temp;
       },
+      /**
+       * 删除用户ById
+       * @param temp
+       */
       deleteUser(temp){
-        console.log(temp)
+        console.log(temp.id)
         this.$confirm('此操作将永久删除该用户, 是否继续?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          this.$message({
-            type: 'success',
-            message: '删除成功!'
-          });
+          //确定删除
+          this.$axios.post("/user/deleteUserById",{userId: temp.id})
+          .then(res => {
+              if (res.data.code === 200){
+                this.$message({
+                  type: 'success',
+                  message: '删除成功!'
+                });
+              }else{
+                this.$message({
+                  type: 'error',
+                  message: '删除失败'
+                });
+              }
+          })
+          .catch(err=>{
+            console.error(err);
+          })
+          //取消删除
         }).catch(() => {
           this.$message({
             type: 'info',
@@ -127,16 +147,44 @@ export default {
           });
         });
       },
+      /**
+       * 确定修改用户数据
+       * @constructor
+       */
       Yes(){
+        console.log(this.userDetails.id)
         this.$confirm('你确定要修改用户信息, 是否继续?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          this.$message({
-            type: 'success',
-            message: '删除成功!'
-          });
+          this.$axios.post('/user/modifyUserById',{
+            id: this.userDetails.id,
+            userName: this.userDetails.userName,
+            password: this.userDetails.password,
+            address: this.userDetails.address,
+            telephoneNumber: this.userDetails.telephoneNumber,
+            sex: this.userDetails.sex,
+            age: this.userDetails.age,
+            createTime: this.userDetails.createTime,
+            powerCode: this.userDetails.powerCode,
+          })
+          .then(res => {
+            if (res.data.code === 200){
+              this.$message({
+                type: 'success',
+                message: '修改成功!'
+              });
+            }else{
+              this.$message({
+                type: 'error',
+                message: '修改失败!'
+              });
+            }
+          })
+          .catch(err=>{
+            console.error(err);
+          })
         }).catch(() => {
           this.$message({
             type: 'info',
@@ -144,6 +192,10 @@ export default {
           });
         });
       },
+      /**
+       * 取消修改用户数据
+       * @constructor
+       */
       No(){
           this.visible=false;
           let back_div=document.getElementById('back_div')

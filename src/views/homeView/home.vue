@@ -374,8 +374,10 @@ export default {
     localFrequency(){
       this.$axios.post('/Map/getAccessFrequencyLocal')
       .then(res=>{
+            //页面展示控制
             this.showDateChange(1);
             console.log(this.showDateController)
+            //更新
             this.Refresh();
             this.accessFrequencyList.frequency={};
             this.accessFrequencyList.name = '本地出入频率';

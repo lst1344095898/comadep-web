@@ -1,6 +1,5 @@
 <template>
   <div>
-
     <div id="back_img_div">
       <img src="../assets/img/login_back.jpg">
     </div>
