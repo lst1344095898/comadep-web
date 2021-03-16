@@ -5,6 +5,7 @@
 <script>
 export default {
   name: "ageView",
+  props: ["accessFrequencyList"],
   data(){
     return{
       msg: 'Welcome use Echarts',

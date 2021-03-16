@@ -43,7 +43,7 @@
                 <el-menu-item index="1-2" @click="ootFrequency">外地</el-menu-item>
               </el-menu-item-group>
             </el-submenu>
-            <el-menu-item index="2">
+            <el-menu-item index="2" @click="getAgeView">
               <i class="el-icon-menu"></i>
               <span slot="title">年龄化</span>
             </el-menu-item>
@@ -59,19 +59,18 @@
         </el-col>
       </div>
 <!--      日期选择-->
-      <div class="block date_div">
-<!--        <span class="demonstration">月</span>-->
-        <span>选择时间</span>
-        <el-date-picker
-          v-model="valueMonth"
-          type="month"
-          placeholder="选择月">
-        </el-date-picker>
-        <el-button type="info" plain @click="changeDate">确定</el-button>
-      </div>
+<!--      <div class="block date_div">-->
+<!--&lt;!&ndash;        <span class="demonstration">月</span>&ndash;&gt;-->
+<!--        <span>选择时间</span>-->
+<!--        <el-date-picker-->
+<!--          v-model="valueMonth"-->
+<!--          type="month"-->
+<!--          placeholder="选择月">-->
+<!--        </el-date-picker>-->
+<!--        <el-button type="info" plain @click="changeDate">确定</el-button>-->
+<!--      </div>-->
 <!--      对话框-->
       <div class="mapSetting_div">
-
         <map-setting v-show="mapSettingList.mapSettingShow" v-bind:mapSettingList = "mapSettingList"></map-setting>
       </div>
 <!--      图片展示-->
@@ -81,6 +80,14 @@
         </div>
 <!--        展示出入频率-->
         <div>
+          <div id="freTime_div" style="position: absolute; top: 20%;right: 8%; display: none">
+            <el-date-picker
+              v-model="freTime"
+              type="month"
+              placeholder="选择月">
+            </el-date-picker>
+            <el-button type="info" plain @click="changeFreTime">确定</el-button>
+          </div>
         <access-frequency v-show=showDateController[1]  :key="timer" v-bind:accessFrequencyList="accessFrequencyList"></access-frequency>
         </div>
 <!--        年龄比例-->
@@ -226,7 +233,10 @@ export default {
         buildingNumber: 0,
         floorNumber: 0,
       },
-      valueMonth:new Date(),
+      //频率时间
+      freTime:new Date(),
+      //判断是外地还是本地
+      LolOrFor: 0,
     }
 
   },
@@ -317,7 +327,7 @@ export default {
         buildingNumber :this.pageParameter.buildingNumber,
         floorNumber :this.pageParameter.floorNumber,
       }).then(res => {
-        if (res.data.code == 200){
+        if (res.data.code === 200){
           this.pageParameter.total=res.data.intResponse
           this.userInfoList=res.data.data;
         }else{
@@ -354,27 +364,35 @@ export default {
       })
     },
     /**
-     * 打印测试
+     * 改变选中的频率时间
      */
-    changeDate(){
-      let dataTest= this.valueMonth;
-      let y = dataTest.getFullYear();
-      let m = dataTest.getMonth() + 1;
-      m = m < 10 ? '0' + m : m;
-      let d = dataTest.getDate();
-      d = d < 10 ? ('0' + d) : d;
-      let dateTime=y + '-' + m + '-' + d
-      console.log(dateTime);
-      // this.$axios.post()
-      // console.log(this.valueMonth.toString)
+    changeFreTime(){
+      //遍历页面展示数组
+      this.showDateChange()
+      if (this.LolOrFor === 0){
+        this.localFrequency();
+      }else{
+        this.ootFrequency();
+      }
+      // console.log(this.valueMonth);
+      // let y = dataTest.getFullYear();
+      // let m = dataTest.getMonth() + 1;
+      // m = m < 10 ? '0' + m : m;
+      // let d = dataTest.getDate();
+      // d = d < 10 ? ('0' + d) : d;
+      // let dateTime=y + '-' + m + '-' + d
+      // console.log(dateTime);
     },
     /**
-     * 选择本地本月出入频率
+     * 选择本地规定月 出入频率
      */
     localFrequency(){
-      this.$axios.post('/Map/getAccessFrequencyLocal')
+      this.$axios.post('/Map/getAccessFrequencyLocal',{
+        "selectedTime" : this.freTime})
       .then(res=>{
         if (res.data.code === 200){
+            document.getElementById('freTime_div').style.display = 'block'
+            this.LolOrFor=0;
             //页面展示控制
             this.showDateChange(1);
             console.log(this.showDateController)
@@ -401,8 +419,12 @@ export default {
      * @constructor
      */
     ootFrequency(){
-      this.$axios.post('/Map/getAccessFrequencyOot')
+      this.$axios.post('/Map/getAccessFrequencyOot',{
+        "selectedTime" : this.freTime
+      })
         .then(res=>{
+          document.getElementById('freTime_div').style.display = 'block'
+          this.LolOrFor=1;
           this.showDateChange(1);
           console.log(this.showDateController)
           this.Refresh();
@@ -416,7 +438,7 @@ export default {
         })
     },
     getAgeView(){
-      this.$axios.post('/Map/getAgeView')
+      this.$axios.post('/viewData/getAgeView')
       .then(res=>{
         this.showDateChange(2);
         this.Refresh();
