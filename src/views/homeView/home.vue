@@ -80,7 +80,7 @@
         </div>
 <!--        展示出入频率-->
         <div>
-          <div id="freTime_div" style="position: absolute; top: 20%;right: 8%; display: none">
+          <div id="freTime_div" style="position: absolute; top: 20%;right: 2%; display: none">
             <el-date-picker
               v-model="freTime"
               type="month"
@@ -437,17 +437,31 @@ export default {
           console.error(err);
         })
     },
+    /**
+     * 得到年龄视图
+     */
     getAgeView(){
-      this.$axios.post('/viewData/getAgeView')
+      this.$axios.post('/viewData/getAgeView',{
+        buildingNumber : 1,
+      })
       .then(res=>{
-        this.showDateChange(2);
-        this.Refresh();
-        this.ageViewList.averageAge={};
-        this.ageViewList.averageAge=res.data.data;
+        if (res.data.code===200){
+            this.hiddenTime();
+            this.showDateChange(2);
+            this.Refresh();
+            this.ageViewList.averageAge={};
+            this.ageViewList.averageAge=res.data.data;
+        }
       })
       .catch(err=>{
         console.error(err);
       })
+    },
+    /**
+     * 隐藏频率时间选择器
+     */
+    hiddenTime(){
+      document.getElementById("freTime_div").style.display="none"
     }
   }
 }
