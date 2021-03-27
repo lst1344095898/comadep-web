@@ -1,5 +1,5 @@
 <template>
-  <div id="main">
+  <div id="main_userMessages">
     <div id="category_div" class="category_div">
       <el-menu default-active="1-4" class="el-menu-vertical-demo"
                @open="handleOpen"

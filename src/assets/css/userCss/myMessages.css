@@ -1,7 +1,8 @@
-#main{
+#main_myMessage{
+  position: relative;
+  left: 0;
   width: 960px;
   height: 874px;
-  margin: 10px;
   float: left;
 }
 .top_div{
@@ -29,14 +30,16 @@
 }
 .right_div{
   margin-top: 10px;
+  margin-left: 10px;
   float: left;
-  width: 618px;
+  width: 64%;
   height: 810px;
   border-radius: 5px;
   box-shadow: 0 2px 4px 0 rgb(121 146 185);
+  position: relative;
 }
 .myMessage_div{
-  width: 100%;
+  width: 71%;
   flex-direction: row;
   padding: 19px 24px;
   position: relative;
@@ -45,9 +48,27 @@
 }
 #myMessages{
   overflow: auto;
-  width: 190px;
-  height: 870px;
+  width:183px;
+  height: 793px;
   scrollBar-face-color: green;
+}
+/*滚动条整体*/
+#myMessages::-webkit-scrollbar {
+
+  width: 12px;
+  background-color: #eee;
+
+}
+/*滚动轨道*/
+#myMessages::-webkit-scrollbar-track {
+
+  background-color: white;
+}
+/*滑块*/
+#myMessages::-webkit-scrollbar-thumb {
+  width: 10px;
+  border-radius: 20px;
+  background: #728480;
 }
 #right_title_div{
   float: left;

@@ -1,5 +1,5 @@
 <template>
-  <div id="main">
+  <div id="main_myMessage">
     <div id="top_div" class="top_div">
       <span>
         我的消息
@@ -10,25 +10,27 @@
         近期消息
       </span>
       <div id="myMessages" >
-      <div v-for="myMessage in myMessagesList" :key="myMessage.userId"
-           class="myMessage_div"
-            v-on:click="getTheMessageList(myMessage.userId)">
-          <div style="float: left">
-            <el-avatar src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"></el-avatar>
-          </div>
-          <div id="right_title_div">
-            <div>
-            <span>{{myMessage.userName}}</span>
+        <div v-for="myMessage in myMessagesList" :key="myMessage.userId"
+             class="myMessage_div"
+              v-on:click="getTheMessageList(myMessage)">
+            <div style="float: left">
+              <el-avatar src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"></el-avatar>
             </div>
-            <div>
-              <span>{{myMessage.lastMessage}}</span>
+            <div id="right_title_div">
+              <div>
+              <span>{{myMessage.userName}}</span>
+              </div>
+              <div>
+                <span>{{myMessage.lastMessage}}</span>
+              </div>
             </div>
-          </div>
-      </div>
+        </div>
       </div>
     </div>
     <div id="right_div" class="right_div">
-      <MessageList></MessageList>
+      <MessageList :key="timer" v-bind:messageList="messageList">
+
+      </MessageList>
     </div>
   </div>
 </template>
@@ -44,6 +46,8 @@ export default {
   data (){
     return{
       myMessagesList:'',
+      messageList:"",
+      timer:""
     }
   },
   mounted() {
@@ -116,7 +120,9 @@ export default {
      * 得到这个人的消息列表
      */
       getTheMessageList(e){
-        alert(e);
+        this.messageList={
+          userName: e.userName,
+        }
     }
   }
 

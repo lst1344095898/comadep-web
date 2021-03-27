@@ -1,8 +1,11 @@
-#main{
-  margin-left: 120px;
-  height: 800px;
+#main_userMessages{
+  height: 100%;
+  width: 100%;
+  left: 0px;
+  position: absolute;
 }
 .category_div{
+  position: absolute;
   margin-left: 400px;
   width: 140px;
   height: 866px;
@@ -29,6 +32,10 @@
   width: 80px;
 }
 .content_div{
+  position: relative;
   float: left;
+  left: 555px;
+  width: 60%;
+  height: 100%;
 }
 

@@ -1,5 +1,5 @@
 <template>
-  <div id="main">
+  <div id="main_systemMessage">
     <div id="content_div" class="content_div">
         <div v-for="sysNew in sysNewList" :key="sysNew.id" class="sysNew_div">
           <div class="sysNew_subject">
@@ -21,7 +21,6 @@
     </div>
   </div>
 </template>
-
 <script>
 export default {
   name: "SystemMessage",

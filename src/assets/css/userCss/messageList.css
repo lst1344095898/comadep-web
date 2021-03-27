@@ -1,0 +1,25 @@
+.main_messageList{
+  position: relative;
+  height: 100%;
+  left: 0;
+  width: 618px;
+  border-radius: 20px;
+}
+.title_div{
+  text-align: center;
+  line-height: 30px;
+  height: 30px;
+}
+.message_div{
+  height: 70%;
+  border-radius: 5px;
+  width: 99.3%;
+  background-color: rgb(244,245,247) ;
+}
+.sendMessage_div{
+  border-top: solid 1px rgb(214, 218,  226);
+  background-color: rgb(244,245,247) ;
+  border-radius: 5px;
+  width: 99.3%;
+  height: 26%;
+}
