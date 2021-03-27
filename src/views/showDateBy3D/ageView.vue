@@ -5,7 +5,8 @@
     <div class="buildSel_div">
       <el-dropdown @command="handleCommand">
       <span class="el-dropdown-link">
-        选择楼号<i class="el-icon-arrow-down el-icon--right"></i>
+        {{buildNumber}}号楼
+        <i class="el-icon-arrow-down el-icon--right"></i>
       </span>
           <el-dropdown-menu slot="dropdown">
             <el-dropdown-item command="1">1号楼</el-dropdown-item>
@@ -13,11 +14,11 @@
             <el-dropdown-item command="3">3号楼</el-dropdown-item>
             <el-dropdown-item command="4">4号楼</el-dropdown-item>
             <el-dropdown-item command="5">5号楼</el-dropdown-item>
-            <el-dropdown-item command="5">6号楼</el-dropdown-item>
-            <el-dropdown-item command="5">7号楼</el-dropdown-item>
-            <el-dropdown-item command="5">8号楼</el-dropdown-item>
-            <el-dropdown-item command="5">9号楼</el-dropdown-item>
-            <el-dropdown-item command="5">10号楼</el-dropdown-item>
+            <el-dropdown-item command="6">6号楼</el-dropdown-item>
+            <el-dropdown-item command="7">7号楼</el-dropdown-item>
+            <el-dropdown-item command="8">8号楼</el-dropdown-item>
+            <el-dropdown-item command="9">9号楼</el-dropdown-item>
+            <el-dropdown-item command="10">10号楼</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
     </div>
@@ -38,9 +39,12 @@ export default {
   data(){
     return{
       msg: 'Welcome use Echarts',
+      ageViewDate: "",
+      buildNumber: "1",
     }
   },
   mounted() {
+    this.ageViewDate=this.ageViewList;
     this.drawLine();
   },
   methods:{
@@ -52,7 +56,7 @@ export default {
       let ageView = echarts.init(document.getElementById("ageView"))
       ageView.setOption({
         title: {
-          text: this.ageViewList.name,
+          text: this.ageViewDate.name,
         },
         tooltip: {
           trigger: 'item'
@@ -87,11 +91,11 @@ export default {
               show: false
             },
             data: [
-              {value: this.ageViewList.averageAge.babyNumber, name: '婴儿'},
-              {value: this.ageViewList.averageAge.juvenileNumber, name: '少年'},
-              {value: this.ageViewList.averageAge.youthNumber, name: '青年'},
-              {value: this.ageViewList.averageAge.adultNumber, name: '成人'},
-              {value: this.ageViewList.averageAge.elderlyNumber, name: '老年'}
+              {value: this.ageViewDate.averageAge.babyNumber, name: '婴儿'},
+              {value: this.ageViewDate.averageAge.juvenileNumber, name: '少年'},
+              {value: this.ageViewDate.averageAge.youthNumber, name: '青年'},
+              {value: this.ageViewDate.averageAge.adultNumber, name: '成人'},
+              {value: this.ageViewDate.averageAge.elderlyNumber, name: '老年'}
             ]
           }
         ]
@@ -102,13 +106,16 @@ export default {
      * 选择楼号
      */
     handleCommand(command) {
+      this.buildNumber=command;
       this.$axios.post('/viewData/getAgeView',{
         buildingNumber : command,
       })
         .then(res=>{
           if (res.data.code===200){
-            this.ageViewList.averageAge={};
-            this.ageViewList.averageAge=res.data.data;
+            console.log("rest")
+            this.ageViewDate.averageAge={};
+            this.ageViewDate.averageAge=res.data.data;
+            this.drawLine();
           }
         })
         .catch(err=>{

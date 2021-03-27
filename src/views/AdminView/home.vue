@@ -2,10 +2,10 @@
   <div>
 <!--    导航栏-->
     <div>
-     <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect">
+      <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect">
       <el-menu-item class="data_menu" index="1" @click="dataSt">数据统计</el-menu-item>
       <el-menu-item class="userMan_menu" index="2" @click="userMan">用户管理</el-menu-item>
-      <el-menu-item class="info_menu" index="3" disabled>消息中心</el-menu-item>
+      <el-menu-item class="info_menu" index="3"  @click="message">消息中心</el-menu-item>
       <div class="my_info_div">
         <el-row class="block-col-2">
             <el-dropdown>
@@ -58,18 +58,6 @@
           </el-menu>
         </el-col>
       </div>
-<!--      日期选择-->
-<!--      <div class="block date_div">-->
-<!--&lt;!&ndash;        <span class="demonstration">月</span>&ndash;&gt;-->
-<!--        <span>选择时间</span>-->
-<!--        <el-date-picker-->
-<!--          v-model="valueMonth"-->
-<!--          type="month"-->
-<!--          placeholder="选择月">-->
-<!--        </el-date-picker>-->
-<!--        <el-button type="info" plain @click="changeDate">确定</el-button>-->
-<!--      </div>-->
-<!--      对话框-->
       <div class="mapSetting_div">
         <map-setting v-show="mapSettingList.mapSettingShow" v-bind:mapSettingList = "mapSettingList"></map-setting>
       </div>
@@ -92,66 +80,6 @@
         </div>
 <!--        年龄比例-->
         <age-view v-show=showDateController[2] :key="timer" v-bind:ageViewList="ageViewList"></age-view>
-        <div>
-
-        </div>
-      </div>
-    </div>
-<!--    用户管理界面-->
-    <div v-show="isUserPanel">
-<!--      搜索框-->
-      <div class="search_div">
-        <div style="float: left">
-          <el-input  style="display: block" class="search_input" placeholder="username/telephone" v-model="search" ></el-input>
-        </div>
-        <div style="float: left">
-          <el-button type="primary" icon="el-icon-search" @click="searchUser">搜索</el-button>
-        </div>
-      </div>
-<!--      导航栏-->
-      <div class="userChange_button_div">
-        <el-col :span="12">
-          <el-menu
-            default-active="0"
-            class="el-menu-vertical-demo"
-            @select="changeBuilding"
-            @open="handleOpen"
-            @close="handleClose">
-            <el-menu-item index="1">
-              <i class="el-icon-menu"></i>
-              <span slot="title">一号楼</span>
-            </el-menu-item>
-            <el-menu-item index="2">
-              <i class="el-icon-menu"></i>
-              <span slot="title">二号楼</span>
-            </el-menu-item>
-            <el-menu-item index="3" >
-              <i class="el-icon-document"></i>
-              <span slot="title">三号楼</span>
-            </el-menu-item>
-            <el-menu-item index="4">
-              <i class="el-icon-setting"></i>
-              <span slot="title">四号楼</span>
-            </el-menu-item>
-          </el-menu>
-        </el-col>
-      </div>
-<!--      数据表格-->
-      <div class="userShowTable_div">
-<!--        用户信息-->
-        <user-manage  :key="timer" v-bind:userInfoList="userInfoList" ></user-manage>
-<!--        分页-->
-        <div class="page_div">
-          <el-pagination
-            background
-            layout="prev, pager, next"
-            @current-change="handleCurrentChange"
-            :current-page="this.pageParameter.currPage"
-            :total="this.pageParameter.total"
-            :page-size="this.pageParameter.pageSize"
-          >
-          </el-pagination>
-        </div>
       </div>
     </div>
   </div>
@@ -160,15 +88,13 @@
 <script>
 import Echarts from "../showDateBy3D/Echarts";
 import mapSetting from "./mapSetting";
-import userManage from "./userManage";
 import accessFrequency from "../showDateBy3D/accessFrequency";
 import ageView from "../showDateBy3D/ageView";
 export default {
-  components: {Echarts,mapSetting,userManage,accessFrequency,ageView},
+  components: {Echarts,mapSetting,accessFrequency,ageView},
   comments: {
     Echarts,
     mapSetting,
-    userManage,
     accessFrequency,
     ageView,
   },
@@ -196,7 +122,6 @@ export default {
       activeIndex: '1',
       isDatePanel:true,
       isUserPanel:false,
-      search:'',
       rules:{},
       form: {
         name: '',
@@ -225,14 +150,6 @@ export default {
         },
       },
       timer: '',
-      userInfoList:[],
-      pageParameter:{
-        currPage: 1,
-        total: 1,
-        pageSize: 8,
-        buildingNumber: 0,
-        floorNumber: 0,
-      },
       //频率时间
       freTime:new Date(),
       //判断是外地还是本地
@@ -243,10 +160,14 @@ export default {
   mounted() {
     //进行地图数据请求
     this.RefreshDemo();
-    //得到用户数据
-    this.getUserInfoByParameter();
   },
   methods:{
+    /**
+     * 跳转到消息页面
+     */
+    message(){
+      this.$router.push("/messages")
+    },
     //切换显示的图片
     showDateChange(key){
       for (let i=0;i<this.showDateController.length;i++){
@@ -271,15 +192,14 @@ export default {
       this.isUserPanel = false;
       this.isDatePanel = true;
     },
+    /**
+     * 跳转到用户管理界面
+     */
     userMan(){
-      this.isDatePanel = false;
-      this.isUserPanel = true;
+      this.$router.push("/userManagement");
     },
     MapImport(){
       this.mapSettingList.mapSettingShow=true;
-    },
-    UpdateCoordinates(){
-
     },
     RefreshDemo(){
       this.$axios.post("/Map/getMap",{})
@@ -300,8 +220,12 @@ export default {
           this.$store.state.dataTemp=arrOutside;
           this.timer = new Date().getTime()
         })
-        .catch();
-      this.getUserInfoByParameter();
+        .catch(err => {
+          // length bug
+          let x= err;
+          x="";
+          console.log(x);
+        });
     },
     Refresh(){
       this.timer = new Date().getTime()
@@ -311,57 +235,6 @@ export default {
       localStorage.removeItem("Authorization")
       // console.log("out")
       this.$router.push('/login');
-    },
-    handleCurrentChange(val) {
-      // 改变默认的页数
-      this.pageParameter.currPage=val
-      this.getUserInfoByParameter();
-      console.log(this.pageParameter);
-    },
-    getUserInfoByParameter(){
-      //通过参数得到用户数据
-      this.$axios.post('/user/getUserByParameter',{
-        currPage: this.pageParameter.currPage,
-        total: this.pageParameter.total,
-        pageSize: this.pageParameter.pageSize,
-        buildingNumber :this.pageParameter.buildingNumber,
-        floorNumber :this.pageParameter.floorNumber,
-      }).then(res => {
-        if (res.data.code === 200){
-          this.pageParameter.total=res.data.intResponse
-          this.userInfoList=res.data.data;
-        }else{
-          alert("url: /user/getUserByParameter-->服务器错误")
-        }
-      }).catch(err => {
-        console.error(err)
-      })
-    },
-    changeBuilding(key){
-      //选择楼层
-      // console.log(key+'楼')
-      this.pageParameter.buildingNumber=key;
-      this.getUserInfoByParameter()
-    },
-    searchUser(){
-      /**
-       * 模糊查询
-       */
-      this.$axios.post('/user/searchUser',{
-        currPage: this.pageParameter.currPage,
-        total: this.pageParameter.total,
-        pageSize: this.pageParameter.pageSize,
-        searchParameter: this.search
-      }).then(res=>{
-        if (res.data.code===200){
-          this.pageParameter.total=res.data.intResponse
-          this.userInfoList=res.data.data;
-        }else{
-          alert("500:服务器错误");
-        }
-      }).catch(err=>{
-        console.error(err);
-      })
     },
     /**
      * 改变选中的频率时间
@@ -374,14 +247,6 @@ export default {
       }else{
         this.ootFrequency();
       }
-      // console.log(this.valueMonth);
-      // let y = dataTest.getFullYear();
-      // let m = dataTest.getMonth() + 1;
-      // m = m < 10 ? '0' + m : m;
-      // let d = dataTest.getDate();
-      // d = d < 10 ? ('0' + d) : d;
-      // let dateTime=y + '-' + m + '-' + d
-      // console.log(dateTime);
     },
     /**
      * 选择本地规定月 出入频率
@@ -426,12 +291,10 @@ export default {
           document.getElementById('freTime_div').style.display = 'block'
           this.LolOrFor=1;
           this.showDateChange(1);
-          console.log(this.showDateController)
           this.Refresh();
           this.accessFrequencyList.name = '外地出入频率';
           this.accessFrequencyList.frequency={};
           this.accessFrequencyList.frequency=res.data.data;
-          console.log(this.accessFrequencyList.frequency)
         })
         .catch(err=>{
           console.error(err);

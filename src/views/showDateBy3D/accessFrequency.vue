@@ -28,7 +28,6 @@ export default {
       //初始化
       // 基于准备好的dom，初始化echarts实例
       let accessFrequency = echarts.init(document.getElementById('accessFrequency'));
-      console.log(accessFrequency);
       accessFrequency.setOption({
         title: {
           text: this.accessFrequencyList.name,

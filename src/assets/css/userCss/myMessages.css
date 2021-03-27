@@ -1,0 +1,57 @@
+#main{
+  width: 960px;
+  height: 874px;
+  margin: 10px;
+  float: left;
+}
+.top_div{
+  width: 800px;
+  height: 34px;
+  margin-left: 10px;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px 0 rgb(121 146 185);
+}
+.top_div span{
+  line-height: 33px;
+  margin-left: 10px;
+}
+.left_div{
+  float: left;
+  margin-top: 10px;
+  margin-left: 10px;
+  width: 182px;
+  height: 810px;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px 0 rgb(121 146 185);
+}
+.title_span{
+  margin-left: 10px;
+}
+.right_div{
+  margin-top: 10px;
+  float: left;
+  width: 618px;
+  height: 810px;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px 0 rgb(121 146 185);
+}
+.myMessage_div{
+  width: 100%;
+  flex-direction: row;
+  padding: 19px 24px;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+}
+#myMessages{
+  overflow: auto;
+  width: 190px;
+  height: 870px;
+  scrollBar-face-color: green;
+}
+#right_title_div{
+  float: left;
+}
+#right_title_div :nth-child(2) span{
+  font-size: 10px;
+}

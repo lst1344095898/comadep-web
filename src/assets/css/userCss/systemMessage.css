@@ -1,0 +1,42 @@
+.content_div{
+  float: left;
+  margin-top: 10px;
+  margin-left: 10px;
+}
+.sysNew_div{
+  margin-top: 10px;
+  width: 800px;
+  height: 85px;
+  box-shadow: 0 2px 4px 0 rgb(121 146 185);
+  margin-bottom: 10px;
+  border-radius: 4px;
+}
+.sysNew_subject{
+  padding: 20px;
+}
+.sysNew_Title{
+  float: left;
+  margin-left: 10px;
+  color: #333;
+  font-weight: 700;
+}
+.sysNew_Title span{
+  color: #333;
+  font-weight: 600;
+  font-size: 15px;
+}
+.sysNew_Date{
+  float: left;
+  color: #999;
+  font-size: 12px;
+  line-height: 22px;
+  margin: 0 10px;
+}
+.sysNew_content_div{
+  margin-left: 10px;
+  clear: both;
+}
+.sysNew_content_div span{
+  font-weight: 500;
+  font-size: 13px;
+}

@@ -51,7 +51,6 @@ export default {
             .then(res => {
               //返回用户状态
               if (res.data.code===200){
-                console.log(res.data.data)
                 this.$message({
                   type:'success',
                   message:'用户登录成功'
@@ -66,7 +65,7 @@ export default {
                 if (res.data.data.powerCode === 0) {
                   this.$router.push('/home');
                 }else if (res.data.data.powerCode === 3){
-                  this.$router.push('/userHome');
+                  this.$router.push('/user/userHome');
                 }
               }else{
                 this.$message({

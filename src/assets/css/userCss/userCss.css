@@ -1,0 +1,22 @@
+/*databutton//数据统计按钮*/
+
+.userHome_menu{
+  left: 750px;
+  margin-right: 20px;
+}
+.userMessages_menu{
+  left: 750px;
+}
+.info_menu{
+  left: 1200px;
+}
+.my_menu{
+  left: 1500px;
+}
+.my_info_div{
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 100px;
+  height: 20px;
+}

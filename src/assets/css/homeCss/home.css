@@ -42,30 +42,8 @@
 .el-icon-arrow-down {
   font-size: 12px;
 }
-/*用户面板*/
-.search_div{
-  position: relative;
-  left: 750px;
-  margin-top: 20px;
-  width: 300px;
-  height: 45px;
-  display: block;
-}
-.search_input {
-}
-.userChange_button_div{
-  margin-top: 30px;
-  width: 300px;
-}
-.userShowTable_div{
-  position: absolute;
-  left: 350px;
-  top: 150px;
-  width: 1200px;
-  height: 600px;
-  box-shadow: 0 0 5px #1f1717;
 
-}
+
 /*对话框*/
 .mapSetting_div{
   position: absolute;
@@ -80,11 +58,7 @@
   left: 25%;
   width: 43%;
 }
-.page_div{
-  position: absolute;
-  left: 38%;
-  top: 556px;
-}
+
 /*日期*/
 .date_div{
   position: relative;

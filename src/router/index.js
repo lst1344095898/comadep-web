@@ -4,11 +4,17 @@ import Vue from 'vue'
 import Register from '../views/Register';
 import index from '../views/index';
 import login from '../views/login';
-import home from '../views/homeView/home.vue'
+import home from '../views/AdminView/home.vue'
 import android from "@/views/android";
 import NotFound from '../views/404';
-import userHome from "@/views/userHome";
+import UserHome from "../views/UserView/UserHome"
+import Messages from '../views/Message';
+import UserManagement from "../views/AdminView/UserManagement";
+import UserMessages from "../views/UserView/UserMessages";
 import Echarts from "../views/showDateBy3D/Echarts"
+import User from "../views/UserView/User";
+import SystemMessage from "../views/UserView/SystemMessage";
+import MyMessages from "../views/UserView/MyMessages";
 //Vue.use(插件)传入路由对插件、
 Vue.use(VueRouter)
     //创建路由对象
@@ -18,39 +24,71 @@ Vue.use(VueRouter)
 //路由数组
 const routes = [
     {
-        path: '/',
-        name: 'index',
-        component: index
+      path: '/',
+      name: 'index',
+      component: index
     },
     {
-        path: '/register',
-        name: 'Register',
-        component: Register
+      path: '/register',
+      name: 'Register',
+      component: Register
     },
     {
-        path: '/login',
-        name: 'login',
-        component: login
+      path: '/login',
+      name: 'login',
+      component: login
     },
     {
-        path: '/home',
-        name: 'home',
-        component: home
+      path: '/home',
+      name: 'home',
+      component: home
     },
     {
-        path: '/userHome',
-        name: 'userHome',
-        component: userHome,
+      path: '/android',
+      name: 'android',
+      component: android
     },
     {
-        path: '/android',
-        name: 'android',
-        component: android
+      path: '/Echarts',
+      name: 'Echarts',
+      component: Echarts
     },
     {
-        path: '/Echarts',
-        name: 'Echarts',
-        component: Echarts
+      path: '/messages',
+      name: 'Messages',
+      component: Messages
+    },
+    {
+      path: '/userManagement',
+      name: 'UserManagement',
+      component: UserManagement
+    }
+    ,
+    {
+      path: "/user",
+      name: 'User',
+      component: User,
+      meta: '用户页面',
+      children:[
+        {
+          path: 'userHome',
+          component: UserHome
+        },
+        {
+          path: 'userMessages',
+          component: UserMessages,
+          children : [
+            {
+              path: 'systemMessage',
+              component: SystemMessage
+            },
+            {
+              path: 'myMessages',
+              component: MyMessages
+            }
+          ]
+        }
+      ]
     },
     {
         path: '/*',
@@ -71,7 +109,6 @@ router.beforeEach((to, from, next) => {
             next();
         } else {
             let token = localStorage.getItem("Authorization");
-            console.log(token)
             if (token === null || token === '') {
                 next('/login');
             } else {

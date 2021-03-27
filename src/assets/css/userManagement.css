@@ -1,0 +1,54 @@
+.data_menu{
+  left: 750px;
+  margin-right: 20px;
+}
+.userMan_menu{
+  left: 750px;
+}
+.info_menu{
+  left: 1200px;
+}
+.my_menu{
+  left: 1500px;
+}
+.my_info_div{
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 100px;
+  height: 20px;
+}
+.el-dropdown-link {
+  cursor: pointer;
+  color: #409EFF;
+}
+/*用户面板*/
+.search_div{
+  position: relative;
+  left: 750px;
+  margin-top: 20px;
+  width: 300px;
+  height: 45px;
+  display: block;
+}
+.search_input {
+}
+
+.userChange_button_div{
+  margin-top: 30px;
+  width: 300px;
+}
+.userShowTable_div{
+  position: absolute;
+  left: 350px;
+  top: 150px;
+  width: 1200px;
+  height: 600px;
+  box-shadow: 0 0 5px #1f1717;
+}
+.page_div{
+  position: absolute;
+  left: 38%;
+  top: 556px;
+}
+

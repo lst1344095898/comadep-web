@@ -28,7 +28,6 @@ export default {
       let myChart = echarts.init(document.getElementById('myChart'));
       //X坐标轴
       let hours=this.echartsList.hours;
-      console.log('hours',hours);
       //Y坐标轴
       let days = this.echartsList.days;
       //Z坐标轴
