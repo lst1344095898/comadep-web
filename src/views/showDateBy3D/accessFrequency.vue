@@ -57,7 +57,7 @@ export default {
           type: 'value'
         }],
         series:[{
-          name:'频率 /月',
+          name:'频率 /天',
           data: this.accessFrequencyList.frequency,
           type: 'bar',
         }]

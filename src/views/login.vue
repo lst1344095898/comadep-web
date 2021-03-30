@@ -51,10 +51,10 @@ export default {
             .then(res => {
               //返回用户状态
               if (res.data.code===200){
-                this.$message({
-                  type:'success',
-                  message:'用户登录成功'
-                })
+                // this.$message({
+                //   type:'success',
+                //   message:'用户登录成功'
+                // })
                 // localStorage.setItem(tokenId,res.data.token);
                 //将token存入
                 this.changeLogin({Authorization:res.data.token});

@@ -36,7 +36,7 @@
 </template>
 
 <script>
-import MessageList from "./MessageList";
+import MessageList from "@/views/UserView/MessageList";
 export default {
   components: { MessageList },
   comments: {
@@ -62,57 +62,57 @@ export default {
           {
             userId: 1,
             userName: "李四",
-            lastMessage: "你好",
+            lastMessage: "咕呱咕呱",
           },
           {
             userId: 2,
-            userName: "张三",
-            lastMessage: "你好",
+            userName: "王麻子",
+            lastMessage: "咕呱咕呱",
           },
           {
             userId: 3,
-            userName: "张三",
-            lastMessage: "你好",
+            userName: "hyz",
+            lastMessage: "孤寡孤寡孤寡",
           },
           {
             userId: 4,
-            userName: "张三",
-            lastMessage: "你好",
+            userName: "hyz",
+            lastMessage: "孤寡孤寡孤寡",
           },
           {
             userId: 5,
-            userName: "张三",
-            lastMessage: "你好",
+            userName: "hyz",
+            lastMessage: "孤寡孤寡孤寡",
           },
           {
             userId: 6,
-            userName: "张三",
-            lastMessage: "你好",
+            userName: "hyz",
+            lastMessage: "孤寡孤寡孤寡",
           },
           {
             userId: 7,
-            userName: "张三",
-            lastMessage: "你好",
+            userName: "hyz",
+            lastMessage: "孤寡孤寡孤寡",
           },
           {
             userId: 8,
-            userName: "张三",
-            lastMessage: "你好",
+            userName: "hyz",
+            lastMessage: "孤寡孤寡孤寡",
           },
           {
             userId: 9,
-            userName: "张三",
-            lastMessage: "你好",
+            userName: "hyz",
+            lastMessage: "孤寡孤寡孤寡",
           },
           {
             userId: 10,
-            userName: "张三",
-            lastMessage: "你好",
+            userName: "hyz",
+            lastMessage: "孤寡孤寡孤寡",
           },
           {
             userId: 11,
             userName: "hyz",
-            lastMessage: "你好",
+            lastMessage: "孤寡孤寡孤寡",
           }
         ]
       },
@@ -129,6 +129,6 @@ export default {
 }
 </script>
 
-<style scoped src="../../assets/css/userCss/myMessages.css">
+<style scoped src="../assets/css/AdminMessages.css">
 
 </style>

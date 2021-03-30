@@ -18,11 +18,11 @@
           <i class="el-icon-chat-dot-round"></i>
           <span slot="title">我的消息</span>
         </el-menu-item>
-        <el-menu-item index="3" class="menu_button">
+        <el-menu-item index="3" class="menu_button" disabled>
           <i class="el-icon-document"></i>
           <span slot="title">导航三</span>
         </el-menu-item>
-        <el-menu-item index="4" class="menu_button">
+        <el-menu-item index="4" class="menu_button" disabled>
           <i class="el-icon-setting"></i>
           <span slot="title">导航四</span>
         </el-menu-item>

@@ -13,7 +13,7 @@
             </span>
             <div class="sysNew_content_div">
               <span class="sysNew_content">
-                {{sysNew.content}}
+                <a href="#">{{sysNew.content}}</a>
               </span>
             </div>
           </div>
@@ -39,17 +39,15 @@ export default {
     getSystemNews(){
       this.sysNewList=[
         {
-          title: "今天是个好日子",
+          title: "社区通知",
           releaseTime: "2021-3-24 12:20",
-          content: "G.E.M.邓紫棋、韩红、黄龄、郎朗、刘柏辛、洛天依、毛不易、撒贝宁、五条人、" +
-            "五月天、谢霆锋、周深等多位嘉宾陪你跨年！《EVA》、《指环王》、“漫威宇宙”主题节目倾情演绎！" +
-            "直播间戳→" +"",
+          content: "社区即将进行社区体育比赛想要报名的请找楼长进行报名→" +"",
           id: 1
 
         },{
-          title: "今天是个好日子",
+          title: "社区通知",
           releaseTime: "2021-3-24 12:40",
-          content: "我爱你",
+          content: "社区即将进行社区体育比赛",
           id: 2
         }
       ]

@@ -15,7 +15,59 @@
 }
 .carousel_div{
   text-align: center;
-  margin:0 auto;
+  top: 30px;
+  margin:20px auto;
   width: 800px;
   height: 210px;
 }
+.notice_userHome{
+  position: relative;
+  float: left;
+
+  left: 200px;
+  top: 100px;
+  width: 350px;
+  height: 200px;
+  box-shadow: 0 2px 4px 0 rgb(121 146 185);
+}
+#notice_title_div{
+  align-content: center;
+  background-color: #409EFF;
+}
+.notice_cont{
+
+}
+.notice_li{
+  height: 30px;
+  width: 350px;
+}
+.notice_li :hover{
+  background-color: rgb(236,245,255);
+}
+.activity_userHome{
+  position: relative;
+  float: left;
+  left: 350px;
+  top: 100px;
+  width: 350px;
+  height: 200px;
+  box-shadow: 0 2px 4px 0 rgb(121 146 185);
+ }
+#activity_title_div{
+  align-content: center;
+  background-color: #409EFF;
+}
+.build_userHome{
+  position: relative;
+  float: left;
+  left: 500px;
+  top: 100px;
+  width: 350px;
+  height: 200px;
+  box-shadow: 0 2px 4px 0 rgb(121 146 185);
+}
+#build_title_div{
+  align-content: center;
+  background-color: #409EFF;
+}
+

@@ -61,6 +61,17 @@
         </el-menu>
       </el-col>
     </div>
+    <div id="table_operation" class="table_operation">
+      <div class="upload_div">
+      <el-upload class="" action="" :http-request='uploadUser' :show-file-list="false" multiple>
+        <el-button class="custom-btn" size="small">上传</el-button>
+      </el-upload>
+      </div>
+      <div class="download_div">
+        <el-button class="custom-btn"  size="small" @click="download">导出
+        </el-button>
+      </div>
+    </div>
     <div class="userShowTable_div">
       <!--        用户信息-->
       <user-manage  :key="timer" v-bind:userInfoList="userInfoList" ></user-manage>
@@ -103,6 +114,7 @@ export default {
         pageSize: 8,
         buildingNumber: 0,
         floorNumber: 0,
+        file:''
       },
 
     }
@@ -217,6 +229,75 @@ export default {
       this.getUserInfoByParameter();
       console.log(this.pageParameter);
     },
+    /**
+     * 上传用户
+     */
+    uploadUser(param){
+      const id = 1;
+      let fileObject = param.file;
+      let formData = new FormData();
+      formData.append("file", fileObject);
+      alert("上传成功");
+      this.$store
+        .dispatch("UploadFile", { formData: formData, id: id })
+        .then(response => {
+          if (Array.isArray(response)) {
+            if (response) {
+              this.$message({
+                showClose: true,
+                message: "上传成功。",
+                type: "success"
+              });
+              this.getFileList(id);
+            }
+          } else {
+            alert("上传成功")
+
+            this.$message.error(response.message);
+          }
+          console.log("response==", response);
+        })
+        .catch(message => {
+          alert("上传成功")
+          console.log("message======================", message);
+          this.$message.error("上传失败，请联系管理员");
+        });
+    },
+    /**
+     * 下载用户信息
+     */
+    download(){
+      // let self = this;
+      // let url = self.$store.state.path + "user/downloadUser";
+      // let data = JSON.stringify({
+      //         user: self.$store.state.username,
+      //        file_name: self.plist_file_name
+      //    });
+        let data;
+         console.log("data:", data)
+         this.$axios(
+             {
+               method: "post",
+               url:  "/user/downloadUser",
+               data: {},
+               responseType: "blob",    // 指定获取数据的类型为blob
+               }
+         ).then(
+             function (response) {
+               data = response.data.data;
+               //创建a标签并点击， 即触发下载
+               let url = window.URL.createObjectURL(new Blob([data]));
+               let link = document.createElement("a");
+               link.style.display = "none";
+               link.href = url;
+               link.setAttribute("download", "用户表格.xls");
+               document.body.appendChild(link);
+               link.click()
+             }
+         ).catch(function (err) {
+             console.log(err)
+           })
+    }
   }
 }
 </script>

@@ -15,6 +15,7 @@ import Echarts from "../views/showDateBy3D/Echarts"
 import User from "../views/UserView/User";
 import SystemMessage from "../views/UserView/SystemMessage";
 import MyMessages from "../views/UserView/MyMessages";
+import AdminMessages from "@/views/AdminMessages";
 //Vue.use(插件)传入路由对插件、
 Vue.use(VueRouter)
     //创建路由对象
@@ -56,7 +57,14 @@ const routes = [
     {
       path: '/messages',
       name: 'Messages',
-      component: Messages
+      component: Messages,
+      meta: '管理员消息中心',
+      children:[
+        {
+          path: 'adminMessages',
+          component: AdminMessages
+        },
+      ]
     },
     {
       path: '/userManagement',
