@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="message_main_div" class="message_main_div">
 <!--    导航栏-->
     <div>
       <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect">
@@ -27,7 +27,7 @@
     </div>
     <div class="left_navigation_div">
       <el-menu
-        default-active="2"
+        default-active="1"
         class="el-menu-vertical-demo"
         :router="false"
         :collapse="false">
@@ -37,9 +37,9 @@
               <span>我的消息</span>
             </el-badge>
         </el-menu-item>
-        <el-menu-item index="2">
+        <el-menu-item index="2" @click="getFeedback">
           <i class="el-icon-menu"></i>
-          <el-badge :value="10" class="item">
+          <el-badge :value="14" class="item">
             <span >收到反馈</span>
           </el-badge>
         </el-menu-item>
@@ -54,43 +54,40 @@
       </el-menu>
     </div>
 <!--    子页面-->
-    <div id="subpage_div_message" style="display: none">
+    <div id="subpage_div_message"  class="subpage_div_message" style="display: block">
       <router-view></router-view>
     </div>
-    <div id="content_div_message">
+    <div id="content_div_message" style="display: none">
       <div id="deliver_ann" class="deliver_ann">
-        <div class="deliver_title">
-          发布消息
-        </div>
-        <div class="message_content">
-          <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
+        <div class="message_content" >
+          <div class="deliver_title">
+             <span style="margin-left: 40%">社区通知</span>
+          </div>
+          <el-form :model="noticeForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm"
+          style="margin-top: 20px"
+          >
             <el-form-item label="通知名称" prop="name">
-              <el-input v-model="ruleForm.name"></el-input>
+              <el-input v-model="noticeForm.name"></el-input>
             </el-form-item>
             <el-form-item label="通知区域" prop="region">
-              <el-select v-model="ruleForm.region" placeholder="请选择活动区域">
-                <el-option label="一号楼" value="shanghai"></el-option>
-                <el-option label="二号楼" value="beijing"></el-option>
-              </el-select>
-            </el-form-item>
-            <el-form-item label="有效时间" required>
-              <el-col :span="11">
-                <el-form-item prop="date1">
-                  <el-date-picker type="date" placeholder="选择日期" v-model="ruleForm.date1" style="width: 100%;"></el-date-picker>
-                </el-form-item>
-              </el-col>
-              <el-col class="line" :span="2">-</el-col>
-              <el-col :span="11">
-                <el-form-item prop="date2">
-                  <el-time-picker placeholder="选择时间" v-model="ruleForm.date2" style="width: 100%;"></el-time-picker>
-                </el-form-item>
-              </el-col>
+              <el-checkbox-group v-model="noticeForm.region">
+                <el-checkbox label="1号楼" name="type"></el-checkbox>
+                <el-checkbox label="2号楼" name="type"></el-checkbox>
+                <el-checkbox label="3号楼" name="type"></el-checkbox>
+                <el-checkbox label="4号楼" name="type"></el-checkbox>
+                <el-checkbox label="5号楼" name="type"></el-checkbox>
+                <el-checkbox label="6号楼" name="type"></el-checkbox>
+                <el-checkbox label="7号楼" name="type"></el-checkbox>
+                <el-checkbox label="8号楼" name="type"></el-checkbox>
+                <el-checkbox label="9号楼" name="type"></el-checkbox>
+                <el-checkbox label="10号楼" name="type"></el-checkbox>
+              </el-checkbox-group>
             </el-form-item>
             <el-form-item label="是否置顶" prop="delivery">
-              <el-switch v-model="ruleForm.delivery"></el-switch>
+              <el-switch v-model="noticeForm.toTop"></el-switch>
             </el-form-item>
             <el-form-item label="通知性质" prop="type">
-              <el-checkbox-group v-model="ruleForm.type">
+              <el-checkbox-group v-model="noticeForm.type">
                 <el-checkbox label="社区卫生" name="type"></el-checkbox>
                 <el-checkbox label="社区活动" name="type"></el-checkbox>
                 <el-checkbox label="疫情相关" name="type"></el-checkbox>
@@ -98,10 +95,10 @@
               </el-checkbox-group>
             </el-form-item>
             <el-form-item label="消息内容" prop="desc">
-              <el-input type="textarea" v-model="ruleForm.desc"></el-input>
+              <el-input type="textarea" v-model="noticeForm.content"></el-input>
             </el-form-item>
             <el-form-item>
-              <el-button type="primary" @click="submitForm('ruleForm')">发送通知</el-button>
+              <el-button type="primary" @click="sendNotice">发送通知</el-button>
               <el-button @click="resetForm('ruleForm')">重置</el-button>
             </el-form-item>
           </el-form>
@@ -117,20 +114,17 @@ export default {
   data(){
     return{
       activeIndex: '3',
-      ruleForm: {
+      noticeForm: {
         name: '',
-        region: '',
-        date1: '',
-        date2: '',
-        delivery: false,
+        region: [],
+        toTop: false,
         type: [],
-        resource: '',
-        desc: ''
+        content: ''
       },
       rules: {
         name: [
           { required: true, message: '请输入通知名称', trigger: 'blur' },
-          { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
+          { min: 0, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
         ],
         region: [
           { required: true, message: '请选择通知范围', trigger: 'change' }
@@ -211,16 +205,50 @@ export default {
       this.$router.push("/messages/adminMessages")
     },
     /**
+     * 反馈页面
+     */
+    getFeedback(){
+      this.$router.push("/messages/feedBack")
+    },
+    /**
      * 到消息发布页面
      */
     goNewsRelease(){
+      this.$router.push("/messages")
       document.getElementById("subpage_div_message").style.display="none"
       document.getElementById("content_div_message").style.display="block"
+    },
+    /**
+     * 发送社区消息
+     */
+    sendNotice(){
+      this.$axios.post("message/sendNotice",
+        {
+          noticeName:this.noticeForm.name,
+          noticeRegion:this.noticeForm.region.toString(),
+          noticeToTop: this.noticeForm.toTop,
+          noticeType: this.noticeForm.type.toString(),
+          noticeContent: this.noticeForm.content,
+          noticeCategory: "community"
+        })
+        .then(res =>{
+          if (res.data.code === 200){
+            alert("请求成功")
+            this.noticeForm.name="";
+            this.noticeForm.region=[];
+            this.noticeForm.toTop=false;
+            this.noticeForm.type=[];
+            this.noticeForm.content="";
+          }
+        })
+        .catch(error =>{
+          console.error(error);
+        })
     }
   }
 }
 </script>
 
-<style scoped src="../assets/css/messages.css">
+<style scoped src="../../assets/css/homeCss/messages.css">
 
 </style>

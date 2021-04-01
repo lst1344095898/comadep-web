@@ -1,5 +1,5 @@
 <template>
-  <div id="main_myMessage">
+  <div id="main_adminMessage">
     <div id="top_div" class="top_div">
       <span>
         我的消息
@@ -9,34 +9,31 @@
       <span class="title_span">
         近期消息
       </span>
-      <div id="myMessages" >
-        <div v-for="myMessage in myMessagesList" :key="myMessage.userId"
-             class="myMessage_div"
-              v-on:click="getTheMessageList(myMessage)">
+      <div id="adminMessages" >
+        <div v-for="adminMessage in adminMessagesList" :key="adminMessage.userId"
+             class="adminMessage_div"
+              v-on:click="getTheMessageList(adminMessage.userName)">
             <div style="float: left">
               <el-avatar src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"></el-avatar>
             </div>
             <div id="right_title_div">
               <div>
-              <span>{{myMessage.userName}}</span>
+              <span>{{adminMessage.userName}}</span>
               </div>
               <div>
-                <span>{{myMessage.lastMessage}}</span>
+                <span>{{adminMessage.lastMessage}}</span>
               </div>
             </div>
         </div>
       </div>
     </div>
     <div id="right_div" class="right_div">
-      <MessageList :key="timer" v-bind:messageList="messageList">
-
-      </MessageList>
+      <MessageList :key="timer" v-bind:messageList="messageList"></MessageList>
     </div>
   </div>
 </template>
-
 <script>
-import MessageList from "@/views/UserView/MessageList";
+import MessageList from "../UserView/MessageList";
 export default {
   components: { MessageList },
   comments: {
@@ -45,20 +42,23 @@ export default {
   name: "MyMessages",
   data (){
     return{
-      myMessagesList:'',
-      messageList:"",
+      adminMessagesList:'',
+      messageList:{
+        name:"",
+        messageLists:{}
+      },
       timer:""
     }
   },
   mounted() {
-    this.getMyMessages();
+    this.getAdminMessages();
   },
   methods:{
     /**
      * 得到你的未删除的通话记录
      */
-      getMyMessages(){
-        this.myMessagesList=[
+      getAdminMessages(){
+        this.adminMessagesList=[
           {
             userId: 1,
             userName: "李四",
@@ -120,15 +120,36 @@ export default {
      * 得到这个人的消息列表
      */
       getTheMessageList(e){
-        this.messageList={
-          userName: e.userName,
-        }
+        this.messageList.name=e;
+        this.messageList.messageLists=[
+          {
+            who:"hyz",
+            count:"你好",
+            data:"2021-02-01"
+          },
+          {
+            who:"me",
+            count:"你好",
+            data:"2021-02-01"
+          },
+          {
+            who:"hyz",
+            count:"你好",
+            data:"2021-02-01"
+          },
+          {
+            who:"hyz",
+            count:"你好",
+            data:"2021-02-01"
+          },
+        ]
+
     }
   }
 
 }
 </script>
 
-<style scoped src="../assets/css/AdminMessages.css">
+<style scoped src="../../assets/css/homeCss/AdminMessages.css">
 
 </style>

@@ -1,3 +1,8 @@
+.message_main_div{
+  width: 100%;
+  height: 100%;
+  margin: auto;
+}
 .data_menu{
   left: 750px;
   margin-right: 20px;
@@ -25,6 +30,7 @@
 .left_navigation_div{
   position: relative;
   float: left;
+  left: 300px;
   top: 10px;
   box-shadow: 0 2px 4px 0 rgb(121 146 185);
   padding: 5px;
@@ -35,10 +41,16 @@
   top: 20px;
   width: 500px;
   height: 600px;
-
-
+}
+.subpage_div_message{
+  position: relative;
+  left: 23%;
+  width: 80%;
+  height: 800px;
 }
 .deliver_title{
+  width: 100%;
+  height: 30px;
   align-content: center;
 }
 

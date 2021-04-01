@@ -1,4 +1,4 @@
-#main_myMessage{
+#main_adminMessage{
   position: relative;
   left: 0;
   width: 960px;
@@ -38,7 +38,7 @@
   box-shadow: 0 2px 4px 0 rgb(121 146 185);
   position: relative;
 }
-.myMessage_div{
+.adminMessage_div{
   width: 71%;
   flex-direction: row;
   padding: 19px 24px;
@@ -46,26 +46,25 @@
   overflow: hidden;
   cursor: pointer;
 }
-#myMessages{
+#adminMessages{
   overflow: auto;
   width:183px;
   height: 793px;
   scrollBar-face-color: green;
 }
 /*滚动条整体*/
-#myMessages::-webkit-scrollbar {
-
+#adminMessages::-webkit-scrollbar {
   width: 12px;
   background-color: #eee;
 
 }
 /*滚动轨道*/
-#myMessages::-webkit-scrollbar-track {
+#adminMessages::-webkit-scrollbar-track {
 
   background-color: white;
 }
 /*滑块*/
-#myMessages::-webkit-scrollbar-thumb {
+#adminMessages::-webkit-scrollbar-thumb {
   width: 10px;
   border-radius: 20px;
   background: #728480;

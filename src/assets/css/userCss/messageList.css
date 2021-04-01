@@ -23,3 +23,15 @@
   width: 99.3%;
   height: 26%;
 }
+.left_message{
+  position: relative;
+  float: left;
+  left: 10px;
+  clear: both;
+}
+.right_message{
+  position: relative;
+  float: right;
+  right: 10px;
+  clear: both;
+}

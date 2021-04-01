@@ -1,10 +1,15 @@
 <template>
   <div id="main_messageList" class="main_messageList">
     <div class="title_div">
-      {{messageList.userName}}
+      {{messageList.name}}
     </div>
     <div id="message_div" class="message_div">
+      <div  v-for="(message,index) in messageList.messageLists" :key="index" style="position: relative">
+        <div :class="message.who===messageList.name?'left_message':'right_message'">
+          {{message.who}}说{{message.count}}
+        </div>
 
+      </div>
     </div>
     <div id="sendMessage_div" class="sendMessage_div">
 

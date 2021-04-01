@@ -8,14 +8,15 @@ import home from '../views/AdminView/home.vue'
 import android from "@/views/android";
 import NotFound from '../views/404';
 import UserHome from "../views/UserView/UserHome"
-import Messages from '../views/Message';
+import Messages from '../views/AdminView/Message';
 import UserManagement from "../views/AdminView/UserManagement";
 import UserMessages from "../views/UserView/UserMessages";
 import Echarts from "../views/showDateBy3D/Echarts"
 import User from "../views/UserView/User";
 import SystemMessage from "../views/UserView/SystemMessage";
 import MyMessages from "../views/UserView/MyMessages";
-import AdminMessages from "@/views/AdminMessages";
+import AdminMessages from "../views/AdminView/AdminMessages";
+import FeedBack from "../views/AdminView/FeedBack";
 //Vue.use(插件)传入路由对插件、
 Vue.use(VueRouter)
     //创建路由对象
@@ -64,6 +65,10 @@ const routes = [
           path: 'adminMessages',
           component: AdminMessages
         },
+        {
+          path: 'feedBack',
+          component: FeedBack
+        }
       ]
     },
     {

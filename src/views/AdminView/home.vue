@@ -399,18 +399,21 @@ export default {
      * 发起通知
      */
     sendNotice(){
-      console.log(this.accSecurityInfoForm.region.toString())
+
       this.$axios.post("message/sendNotice",
         {
           noticeName:this.accSecurityInfoForm.name,
           noticeRegion:this.accSecurityInfoForm.region.toString(),
           noticeToTop: this.accSecurityInfoForm.toTop,
           noticeType: this.accSecurityInfoForm.type.toString(),
-          noticeContent: this.accSecurityInfoForm.content
+          noticeContent: this.accSecurityInfoForm.content,
+          noticeCategory: "security"
         })
       .then(res =>{
         if (res.data.code === 200){
-          alert("请求成果")
+          alert("请求成功")
+          document.getElementById("accSecurityInfo").style.display="none";
+          document.getElementById("backgroundMask").style.display="none";
         }
       })
         .catch(error =>{
