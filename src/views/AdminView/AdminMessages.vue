@@ -45,7 +45,7 @@ export default {
       adminMessagesList:'',
       messageList:{
         name:"",
-        messageLists:{}
+        messageLists:[]
       },
       timer:""
     }
@@ -120,36 +120,13 @@ export default {
      * 得到这个人的消息列表
      */
       getTheMessageList(e){
+        this.timer = new Date().getTime()
         this.messageList.name=e;
-        this.messageList.messageLists=[
-          {
-            who:"hyz",
-            count:"你好",
-            data:"2021-02-01"
-          },
-          {
-            who:"me",
-            count:"你好",
-            data:"2021-02-01"
-          },
-          {
-            who:"hyz",
-            count:"你好",
-            data:"2021-02-01"
-          },
-          {
-            who:"hyz",
-            count:"你好",
-            data:"2021-02-01"
-          },
-        ]
-
     }
   }
 
 }
 </script>
-
 <style scoped src="../../assets/css/homeCss/AdminMessages.css">
 
 </style>

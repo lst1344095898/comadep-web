@@ -44,7 +44,8 @@ const store = new Vuex.Store({
     },
     changMap(state,data){
         state.dataTemp = data;
-    }
+    },
+
   }
 })
 //导出
