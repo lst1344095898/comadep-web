@@ -12,7 +12,7 @@
       <div id="adminMessages" >
         <div v-for="adminMessage in adminMessagesList" :key="adminMessage.userId"
              class="adminMessage_div"
-              v-on:click="getTheMessageList(adminMessage.userName)">
+              v-on:click="getTheMessageList(adminMessage)">
             <div style="float: left">
               <el-avatar src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"></el-avatar>
             </div>
@@ -55,74 +55,34 @@ export default {
   },
   methods:{
     /**
-     * 得到你的未删除的通话记录
+     * 得到当前用户的未删除的通话记录 连接服务器得到当前userId的消息
      */
       getAdminMessages(){
-        this.adminMessagesList=[
+        this.$axios.post("/message/getMessageListByUserId",
           {
-            userId: 1,
-            userName: "李四",
-            lastMessage: "咕呱咕呱",
-          },
-          {
-            userId: 2,
-            userName: "王麻子",
-            lastMessage: "咕呱咕呱",
-          },
-          {
-            userId: 3,
-            userName: "hyz",
-            lastMessage: "孤寡孤寡孤寡",
-          },
-          {
-            userId: 4,
-            userName: "hyz",
-            lastMessage: "孤寡孤寡孤寡",
-          },
-          {
-            userId: 5,
-            userName: "hyz",
-            lastMessage: "孤寡孤寡孤寡",
-          },
-          {
-            userId: 6,
-            userName: "hyz",
-            lastMessage: "孤寡孤寡孤寡",
-          },
-          {
-            userId: 7,
-            userName: "hyz",
-            lastMessage: "孤寡孤寡孤寡",
-          },
-          {
-            userId: 8,
-            userName: "hyz",
-            lastMessage: "孤寡孤寡孤寡",
-          },
-          {
-            userId: 9,
-            userName: "hyz",
-            lastMessage: "孤寡孤寡孤寡",
-          },
-          {
-            userId: 10,
-            userName: "hyz",
-            lastMessage: "孤寡孤寡孤寡",
-          },
-          {
-            userId: 11,
-            userName: "hyz",
-            lastMessage: "孤寡孤寡孤寡",
-          }
-        ]
+            userId:this.$store.state.user.id
+          })
+      .then(res =>{
+        if (res.data.code===200){
+          this.adminMessagesList = res.data.data;
+          console.log("返回的数据是"+this.adminMessagesList);
+        }else{
+          alert("你还没有收到过消息");
+        }
+      }).catch(error =>{
+          console.error(error);
+        })
       },
     /**
      * 得到这个人的消息列表
      */
       getTheMessageList(e){
         this.timer = new Date().getTime()
-        this.messageList.name=e;
+        this.messageList=e;
     }
+  },
+  created() {
+    this.getAdminMessages();
   }
 
 }

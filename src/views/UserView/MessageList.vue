@@ -45,6 +45,7 @@ export default {
           messageId:"1",
           sender:"hyz",
           messageContent:"你好",
+          recipientId: "2",
           recipient:"lst",
           SendTime:"2021-02-01"
         },
@@ -52,6 +53,7 @@ export default {
           messageId:"2",
           sender:"lst",
           messageContent:"你好",
+          recipientId: "2",
           recipient:"me",
           SendTime:"2021-02-01"
         },
@@ -59,6 +61,7 @@ export default {
           messageId:"3",
           sender:"hyz",
           messageContent:"你好",
+          recipientId: "2",
           recipient:"lst",
           SendTime:"2021-02-01"
         },
@@ -66,6 +69,7 @@ export default {
           messageId:"4",
           sender:"hyz",
           messageContent:"你好",
+          recipientId: "2",
           recipient:"lst",
           SendTime:"2021-02-01"
         },
@@ -74,75 +78,47 @@ export default {
   methods:{
 
     /**
-     * 发送消息
+     * 发送消息,用户消息
      */
     sendMessage(){
+      console.log("messageList="+this.messageList)
         //创建json  数据
         let json=JSON.stringify(
           {
+            messageType:"lst",
             sender:this.user.userName,
             recipient:this.messageList.name,
+            recipientId: this.messageList.userId,
             messageContent: this.messageContent,
           }
         )
+        console.log("要发送的消息"+json)
         this.send(json);
-        this.$axios.post("/message/sendMessage",
-          {
-            sender:this.user.userName,
-            recipient:this.messageList.name,
-            messageContent: this.messageContent,
-          })
-        .then(res =>{
-          if (res.data.code===200){
-            console.log(res.data.data);
-            // 发送成功
-            this.messageDate.push(
-              {
-                  messageId:res.data.data.messageId,
-                  recipient:res.data.data.recipient,
-                  sender:res.data.data.sender,
-                  messageContent:res.data.data.messageContent,
-                  sendTime:res.data.data.sendTime,
-                });
-            console.log(this.messageDate);
-        }else{
-          alert("发送失败请检查网络")
-        }
-      })
-      .catch(err =>{
-        console.error(err);
-      })
     },
     /**
      * 更新消息数据
      */
     upData(data){
-      console.log(data);
+      console.log("接收到的消息"+data);
     },
     /**
      * 如果连接成功,发送确认消息,并且注册id
      */
     registerId(){
-      // 得到userName
-      //确认json
-      //消息类型
-      //发送人
-      //消息内容
-      //消息时间
-      //接收者
       let json=JSON.stringify({
         messageType:"82526",
+        senderId:this.user.id,
         sender:this.user.userName,
         recipient:null,
         messageContent: "确认id",
       })
+      console.log(json);
       this.send(json);
     },
     /**
      * 发送消息
      * */
     send(json){
-      console.log("调用send  函数")
       if(!window.WebSocket){
         alert("该浏览器不支持发送消息")
         return false;
@@ -154,6 +130,23 @@ export default {
         alert("连接没有建立");
       }
     },
+    /**
+     * 得到与该用户的会话
+     *
+     *
+     * */
+    getMessageById(){
+      this.$axios.post("message/getMessageById",{
+        senderId:this.messageList.userId,
+        recipientId: this.user.id,
+      })
+      .then(res =>{
+        this.messageDate=res.data.data;
+      })
+      .catch(error =>{
+        console.error(error);
+      })
+    }
   },
   /**
    * 钩子函数
@@ -162,6 +155,7 @@ export default {
   created() {
     const that=this;
     this.user=this.$store.state.user;
+    this.getMessageById();
     if(!window.WebSocket){
       //有的浏览器里可能没有Websocket对象，window就代表浏览器，就做一下兼容性处理
       window.WebSocket=window.MozWebSocket;
